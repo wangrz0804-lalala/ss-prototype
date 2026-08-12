@@ -70,6 +70,8 @@ header p{font-size:13px;color:var(--ink2);margin-top:6px;}
 .rail-btn.liked svg{fill:#ff5b6c;}
 .rail-btn.cmt svg{fill:#fff;}
 .vfoot{position:absolute;left:12px;right:64px;bottom:16px;color:#fff;z-index:2;}
+.rankchip{position:absolute;left:12px;bottom:76px;background:var(--accent);color:#fff;border-radius:8px;padding:6px 10px;font-size:11px;cursor:pointer;z-index:3;box-shadow:0 2px 8px rgba(28,35,48,.35);}
+.vcard.hl{box-shadow:0 0 0 3px var(--accent);}
 .vfoot .logo{font-size:12px;font-weight:700;}
 .vfoot .tag{font-size:11px;opacity:.8;margin-left:6px;}
 .vfoot .capline{font-size:11px;opacity:.65;margin-top:4px;}
@@ -176,7 +178,7 @@ header p{font-size:13px;color:var(--ink2);margin-top:6px;}
 .tabbar .ti.on{color:var(--accent);font-weight:700;}
 .tabbar .ti.on svg{fill:var(--accent);}
 
-/* 截图模式：?shot=list/video/sheet/empty/honor/community/comsheet/cards */
+/* 截图模式：?shot=list/video/sheet/empty/honor/community/cards */
 body.shot{padding:12px;background:#fff;}
 body.shot header{display:none;}
 body.shot .switch{display:none;}
@@ -189,8 +191,8 @@ body.shot.cards .side{display:flex;}
 </head>
 <body>
 <header>
-  <h1>榜单评论功能 · 交互原型</h1>
-  <p>配合《SmartShot 榜单评论功能 PRD》使用。左侧手机上方可切"榜单侧 / 社区侧"：榜单侧点视频卡 → 视频页 → 右轨评论按钮 → 半屏发评论；社区侧为打通方案版本 A 的球筐 feed，点回合卡拉起同一条评论流。右侧为入口清单、状态件与通知闭环。</p>
+  <h1>社区×排行榜打通 · 评论功能 · 交互原型</h1>
+  <p>配合《SmartShot 社区×排行榜打通 · 评论功能 PRD》使用。左侧手机上方可切"榜单侧 / 社区侧"：榜单侧点视频卡 → 视频页 → 右轨评论按钮 → 半屏发评论；社区侧为打通方案版本 A 的球筐 feed，点回合卡进共享视频详情页，详情页"在榜名次"chip 可回跳榜单定位。</p>
 </header>
 <div class="main">
 
@@ -248,6 +250,7 @@ body.shot.cards .side{display:flex;}
               <span>分享</span>
             </div>
           </div>
+          <div class="rankchip" onclick="goRank()">球速榜在榜 · 第 1 名 ›</div>
           <div class="vfoot">
             <span class="logo">SS 回合数据</span><span class="tag">#网球生活日记</span>
             <div class="capline">2026-7-6 14:00 · 东方体育中心 1 号场地</div>
@@ -296,7 +299,7 @@ body.shot.cards .side{display:flex;}
         <div class="topics"><span class="topic">#网球生活日记</span><span class="topic">#界内之王</span><span class="topic">#我的网球瞬间</span></div>
         <div class="wfall">
           <div class="wcol">
-            <div class="pcard round" onclick="communitySheet()">
+            <div class="pcard round" onclick="comCard(0)">
               <div class="cov g1"><span class="roundtag">回合</span><span class="fromtag">来自球速榜 · 168 km/h</span></div>
               <div class="ttl">168 km/h 的发球炸了！这速度能上榜吗</div>
               <div class="meta"><span class="ava">李</span><span class="nm">李日日</span><span class="lkc"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg>2000</span><span class="cmtc"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>12</span></div>
@@ -313,7 +316,7 @@ body.shot.cards .side{display:flex;}
               <div class="ttl">大家穿线多少磅？帮我参考下</div>
               <div class="meta"><span class="ava">张</span><span class="nm">穿线师老张</span><span class="lkc"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg>45</span></div>
             </div>
-            <div class="pcard round" onclick="communitySheet()">
+            <div class="pcard round" onclick="comCard(3)">
               <div class="cov g2"><span class="roundtag">回合</span></div>
               <div class="ttl">156 拍多回合，今天的体能拉满了</div>
               <div class="meta"><span class="ava">周</span><span class="nm">周*</span><span class="lkc"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg>320</span><span class="cmtc"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>3</span></div>
@@ -412,11 +415,11 @@ body.shot.cards .side{display:flex;}
       <h3>社区侧 · 球筐回合卡（版本 A 窗口）</h3>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg></div>
-        <div class="t"><b>入口</b>：小程序顶层社区 tab 进球筐 feed；带"回合"角标的卡与榜单视频同源（打通方案版本 A），普通发布卡形态不变。</div>
+        <div class="t"><b>入口</b>：小程序顶层社区 tab 进球筐 feed；带"回合"角标的卡与榜单视频同源（打通方案版本 A），点卡进共享视频详情页，与榜单视频卡行为一致。</div>
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg></div>
-        <div class="t"><b>评论同源</b>：点回合卡拉起同一条评论半屏，计数与榜单侧实时一致；社区里新评论同样回流榜单。</div>
+        <div class="t"><b>回跳与同源</b>：详情页挂"在榜名次"chip，点 chip 回跳对应榜单并定位该视频；右轨评论拉起同一条评论流，计数两侧实时一致。</div>
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M14 5l7 7-7 7v-4H3v-6h11V5z"/></svg></div>
@@ -468,7 +471,11 @@ function setSw(el){
   document.querySelectorAll('.sw').forEach(function(s){ s.classList.remove('on'); });
   el.classList.add('on');
 }
-function communitySheet(){ cmtCount = 12; syncCount(); openSheet(); }
+function comCard(i){ goVideo(document.querySelectorAll('.vcard')[i]); }
+function goRank(){
+  goList();
+  if(curCard){ curCard.classList.add('hl'); setTimeout(function(){ curCard.classList.remove('hl'); }, 1600); }
+}
 function openSheet(){ document.getElementById('sheet').classList.remove('hidden'); }
 function syncCount(){
   document.getElementById('cmtCnt').textContent = cmtCount;
@@ -501,7 +508,7 @@ function toast(msg){
   t.textContent = msg; t.classList.remove('hidden');
   setTimeout(function(){ t.classList.add('hidden'); }, 1500);
 }
-/* 截图模式：?shot=list/video/sheet/empty/honor/community/comsheet/cards */
+/* 截图模式：?shot=list/video/sheet/empty/honor/community/cards */
 (function(){
   var s = new URLSearchParams(location.search).get('shot');
   if(!s) return;
@@ -513,7 +520,6 @@ function toast(msg){
   else if(s === 'empty'){ goVideo(cards[2]); openSheet(); }
   else if(s === 'honor'){ goHonor(); }
   else if(s === 'community'){ goCommunity(); }
-  else if(s === 'comsheet'){ goCommunity(); communitySheet(); }
 })();
 </script>
 </body>
