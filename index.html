@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>榜单评论功能 · 交互原型</title>
+<style>
+:root{
+  --accent:#2f5bea; --accent-soft:#eef2ff; --accent-line:#cdd9ff;
+  --good:#1f9d6b; --good-soft:#e7f6ef; --good-line:#bfe6d3;
+  --warn:#d9822b; --warn-soft:#fdf1e3; --warn-line:#f0d3ac;
+  --ink:#1c2330; --ink2:#5a6473; --ink3:#8b95a5; --line:#e6e9ef; --bg:#f6f7fa;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);padding:28px;}
+header{max-width:1080px;margin:0 auto 18px;}
+header h1{font-size:20px;}
+header p{font-size:13px;color:var(--ink2);margin-top:6px;}
+.main{max-width:1080px;margin:0 auto;display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;}
+.cap{color:var(--ink3);font-size:12px;margin-top:10px;text-align:center;}
+
+/* ============ 手机 ============ */
+.phone-col{flex:0 0 360px;}
+.phone{width:360px;height:740px;background:#fff;border:1px solid var(--line);border-radius:28px;overflow:hidden;position:relative;box-shadow:0 8px 24px rgba(28,35,48,.08);}
+.scr{position:absolute;inset:0;display:flex;flex-direction:column;}
+.hidden{display:none !important;}
+
+/* 榜单页 */
+.tabs{display:flex;gap:18px;justify-content:center;padding:14px 0 10px;border-bottom:1px solid var(--line);}
+.tab{font-size:14px;color:var(--ink3);padding-bottom:6px;}
+.tab.on{color:var(--ink);font-weight:700;border-bottom:2px solid var(--accent);}
+.banner{margin:10px 12px 0;background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:10px;padding:8px 12px;font-size:12px;color:var(--ink2);display:flex;justify-content:space-between;align-items:center;}
+.banner b{color:var(--accent);}
+.mystrip{margin:8px 12px 0;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:12px;color:var(--ink2);display:flex;gap:8px;align-items:center;}
+.mystrip b{color:var(--ink);}
+.rk{background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:1px 6px;font-size:11px;}
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:10px;padding:16px 12px 0;}
+.pod{width:96px;border-radius:10px 10px 0 0;text-align:center;padding-top:10px;}
+.pod .ava{width:34px;height:34px;border-radius:50%;background:#dfe3ea;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink2);}
+.pod .nm{font-size:11px;color:var(--ink2);}
+.pod .sc{font-size:14px;font-weight:700;margin:2px 0 8px;}
+.pod.p1{background:var(--accent-soft);border:1px solid var(--accent-line);height:132px;}
+.pod.p1 .sc{color:var(--accent);}
+.pod.p2{background:#f0f2f6;border:1px solid var(--line);height:112px;}
+.pod.p3{background:#f0f2f6;border:1px solid var(--line);height:104px;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px;overflow:hidden;}
+.vcard{border:1px solid var(--line);border-radius:10px;overflow:hidden;cursor:pointer;background:#fff;}
+.vcard .thumb{height:88px;background:linear-gradient(160deg,#4a5563,#2b333d);position:relative;}
+.vcard .thumb::after{content:"";position:absolute;inset:14px 18px;border:1px solid rgba(255,255,255,.35);}
+.scorechip{position:absolute;right:6px;bottom:6px;background:rgba(28,35,48,.72);color:#fff;border-radius:6px;font-size:11px;padding:2px 6px;}
+.vcard .meta{display:flex;justify-content:space-between;align-items:center;padding:6px 8px;font-size:11px;color:var(--ink2);}
+.cchip{display:inline-flex;align-items:center;gap:3px;color:var(--ink3);}
+.cchip svg{width:12px;height:12px;fill:var(--ink3);}
+.bottombar{margin-top:auto;border-top:1px solid var(--line);padding:10px 12px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--ink2);}
+.bottombar button{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12px;}
+
+/* 视频页 */
+#scr-video{background:#20262e;}
+.video{position:absolute;inset:0;}
+.court{position:absolute;inset:0;background:linear-gradient(180deg,#39424f 0%,#232a33 70%);}
+.court::after{content:"";position:absolute;inset:26% 14%;border:1px solid rgba(255,255,255,.28);}
+.court::before{content:"";position:absolute;left:50%;top:26%;bottom:26%;width:1px;background:rgba(255,255,255,.28);}
+.back{position:absolute;left:12px;top:14px;width:30px;height:30px;border-radius:50%;background:rgba(28,35,48,.5);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;z-index:3;}
+.rail{position:absolute;right:10px;bottom:120px;display:flex;flex-direction:column;gap:14px;align-items:center;z-index:3;}
+.rail-ava{width:38px;height:38px;border-radius:50%;background:#dfe3ea;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink2);}
+.rail-btn{width:38px;height:44px;display:flex;flex-direction:column;align-items:center;gap:2px;color:#fff;cursor:pointer;}
+.rail-btn svg{width:24px;height:24px;fill:#fff;}
+.rail-btn span{font-size:10px;}
+.rail-btn.liked svg{fill:#ff5b6c;}
+.rail-btn.cmt svg{fill:#fff;}
+.vfoot{position:absolute;left:12px;right:64px;bottom:16px;color:#fff;z-index:2;}
+.vfoot .logo{font-size:12px;font-weight:700;}
+.vfoot .tag{font-size:11px;opacity:.8;margin-left:6px;}
+.vfoot .capline{font-size:11px;opacity:.65;margin-top:4px;}
+
+/* 评论半屏 */
+.sheet{position:absolute;left:0;right:0;bottom:0;height:70%;background:#fff;border-radius:16px 16px 0 0;display:flex;flex-direction:column;z-index:5;box-shadow:0 -8px 24px rgba(28,35,48,.18);}
+.sheet-head{padding:12px 14px;border-bottom:1px solid var(--line);font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;}
+.sheet-head .tip{font-weight:400;font-size:11px;color:var(--ink3);}
+.clist{flex:1;overflow-y:auto;padding:10px 14px;}
+.citem{display:flex;gap:8px;padding:8px 0;}
+.citem .ava{flex:0 0 30px;width:30px;height:30px;border-radius:50%;background:#e8ebf1;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--ink2);}
+.citem .body{flex:1;}
+.citem .nm{font-size:11px;color:var(--ink3);display:flex;gap:6px;align-items:center;}
+.badge-master{background:var(--good-soft);color:var(--good);border-radius:5px;padding:0 5px;font-size:10px;}
+.badge-hot{background:var(--warn-soft);color:var(--warn);border-radius:5px;padding:0 5px;font-size:10px;}
+.citem .txt{font-size:13px;margin:3px 0;}
+.citem .tm{font-size:10px;color:var(--ink3);}
+.citem .like{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:1px;color:var(--ink3);font-size:10px;cursor:pointer;padding-top:4px;}
+.citem .like svg{width:15px;height:15px;fill:var(--ink3);}
+.citem .like.on{color:var(--accent);}
+.citem .like.on svg{fill:var(--accent);}
+.inputbar{border-top:1px solid var(--line);padding:10px 12px;display:flex;gap:8px;}
+.inputbar input{flex:1;border:1px solid var(--line);border-radius:18px;padding:8px 12px;font-size:13px;outline:none;}
+.inputbar input:focus{border-color:var(--accent-line);}
+.inputbar button{background:var(--accent);color:#fff;border:none;border-radius:18px;padding:0 16px;font-size:13px;cursor:pointer;}
+.toast{position:absolute;left:50%;top:44%;transform:translateX(-50%);background:rgba(28,35,48,.82);color:#fff;border-radius:8px;padding:8px 14px;font-size:12px;z-index:9;}
+
+/* ============ 右侧说明卡 ============ */
+.side{flex:1;min-width:300px;display:flex;flex-direction:column;gap:16px;}
+.side h3{font-size:14px;margin-bottom:10px;}
+.row{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px dashed var(--line);}
+.row:first-of-type{border-top:none;}
+.row .ic{flex:0 0 30px;width:30px;height:30px;border-radius:8px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;}
+.row .ic svg{width:16px;height:16px;fill:var(--accent);}
+.row .t{font-size:12.5px;color:var(--ink2);line-height:1.55;}
+.row .t b{color:var(--ink);}
+.states{display:flex;gap:10px;}
+.state{flex:1;border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center;}
+.state .lb{font-size:11px;color:var(--ink3);margin-bottom:8px;}
+.state .bx{background:#fafbfc;border:1px dashed var(--line);border-radius:8px;padding:12px 6px;font-size:11px;color:var(--ink2);min-height:64px;display:flex;align-items:center;justify-content:center;}
+.skl{width:80%;height:8px;background:#eceff3;border-radius:4px;margin:6px auto;}
+.notify{background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:10px;padding:8px 10px;font-size:12px;color:var(--ink);margin-bottom:8px;}
+.notify .sub{font-size:11px;color:var(--ink2);margin-top:2px;}
+.ab{display:flex;gap:10px;}
+.ab .v{flex:1;border-radius:10px;padding:10px;font-size:12px;line-height:1.55;}
+.ab .va{background:var(--good-soft);border:1px solid var(--good-line);color:var(--ink);}
+.ab .vb{background:#fafbfc;border:1px solid var(--line);color:var(--ink2);}
+.ab .v b{display:block;margin-bottom:4px;color:var(--ink);}
+
+/* 荣誉榜屏 */
+.hhead{padding:14px;text-align:center;font-weight:700;position:relative;border-bottom:1px solid var(--line);}
+.hback{position:absolute;left:12px;top:12px;cursor:pointer;color:var(--ink2);font-size:16px;}
+.hcard{margin:12px 12px 0;border:1px solid var(--accent-line);border-radius:12px;padding:12px 4px;background:var(--accent-soft);}
+.hrow{display:flex;}
+.hcell{flex:1;text-align:center;padding:4px 0;}
+.hcell i{display:block;font-size:10px;color:var(--ink2);font-style:normal;}
+.hcell b{font-size:16px;color:var(--accent);}
+.hcell b small{font-size:9px;}
+.htabs{display:flex;justify-content:center;gap:28px;padding:14px 0 6px;font-size:13px;color:var(--ink3);}
+.htabs .on{color:var(--ink);font-weight:700;border-bottom:2px solid var(--accent);padding-bottom:4px;}
+.hrec{margin:8px 12px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;}
+.hrec-h{font-size:11px;color:var(--ink2);}
+.hrec-stats{display:flex;gap:48px;justify-content:center;padding:8px 0 6px;}
+.hrec-stats b{font-size:18px;}
+.hrec-stats i{font-style:normal;font-size:10px;color:var(--ink3);margin-left:2px;}
+.hrec-act{display:flex;gap:28px;justify-content:center;font-size:11px;color:var(--ink3);}
+.act{display:inline-flex;align-items:center;gap:4px;cursor:pointer;}
+.act svg{width:14px;height:14px;fill:var(--ink3);}
+
+/* 榜单侧 / 社区侧切换 */
+.switch{display:flex;gap:8px;margin-bottom:10px;}
+.sw{font-size:12px;color:var(--ink2);background:#fff;border:1px solid var(--line);border-radius:16px;padding:5px 14px;cursor:pointer;}
+.sw.on{color:#fff;background:var(--accent);border-color:var(--accent);}
+
+/* 社区 · 球筐 */
+.chead{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);}
+.chead .ttl{font-size:15px;font-weight:700;}
+.chead .pub{width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;}
+.ctabs{display:flex;gap:20px;justify-content:center;padding:10px 0 8px;font-size:13px;color:var(--ink3);}
+.ctabs .on{color:var(--ink);font-weight:700;border-bottom:2px solid var(--accent);padding-bottom:4px;}
+.topics{display:flex;gap:8px;padding:0 12px 10px;overflow:hidden;}
+.topic{flex:0 0 auto;background:var(--accent-soft);border:1px solid var(--accent-line);color:var(--accent);font-size:11px;border-radius:14px;padding:4px 10px;}
+.wfall{display:flex;gap:10px;padding:0 12px;flex:1;overflow:hidden;align-items:flex-start;}
+.wcol{flex:1;display:flex;flex-direction:column;gap:10px;}
+.pcard{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;cursor:pointer;}
+.pcard .cov{position:relative;}
+.pcard .cov.g1{height:128px;background:linear-gradient(160deg,#4a5563,#2b333d);}
+.pcard .cov.g2{height:92px;background:linear-gradient(160deg,#7f8ea3,#55627a);}
+.pcard .cov.g3{height:104px;background:linear-gradient(160deg,#9aa7b8,#6b7889);}
+.pcard.round .cov.g1::after{content:"";position:absolute;inset:16% 12%;border:1px solid rgba(255,255,255,.35);}
+.roundtag{position:absolute;left:6px;top:6px;background:var(--accent);color:#fff;font-size:10px;border-radius:5px;padding:2px 6px;}
+.fromtag{position:absolute;right:6px;bottom:6px;background:rgba(28,35,48,.72);color:#fff;font-size:10px;border-radius:5px;padding:2px 6px;}
+.pcard .ttl{font-size:12px;line-height:1.5;padding:8px 8px 4px;color:var(--ink);}
+.pcard .meta{display:flex;align-items:center;gap:5px;padding:2px 8px 8px;font-size:10px;color:var(--ink3);}
+.pcard .meta .ava{width:16px;height:16px;border-radius:50%;background:#e8ebf1;display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--ink2);}
+.pcard .meta .nm{color:var(--ink2);}
+.pcard .meta .lkc{display:inline-flex;gap:3px;align-items:center;margin-left:auto;}
+.pcard .meta .lkc svg{width:11px;height:11px;fill:var(--ink3);}
+.pcard .meta .cmtc{display:inline-flex;gap:3px;align-items:center;color:var(--accent);}
+.pcard .meta .cmtc svg{width:11px;height:11px;fill:var(--accent);}
+.tabbar{border-top:1px solid var(--line);display:flex;padding:8px 0 10px;background:#fff;}
+.tabbar .ti{flex:1;text-align:center;font-size:10px;color:var(--ink3);}
+.tabbar .ti svg{width:18px;height:18px;fill:var(--ink3);display:block;margin:0 auto 3px;}
+.tabbar .ti.on{color:var(--accent);font-weight:700;}
+.tabbar .ti.on svg{fill:var(--accent);}
+
+/* 截图模式：?shot=list/video/sheet/empty/honor/community/comsheet/cards */
+body.shot{padding:12px;background:#fff;}
+body.shot header{display:none;}
+body.shot .switch{display:none;}
+body.shot .side{display:none;}
+body.shot .cap{display:none;}
+body.shot .phone{box-shadow:none;}
+body.shot.cards .phone-col{display:none;}
+body.shot.cards .side{display:flex;}
+</style>
+</head>
+<body>
+<header>
+  <h1>榜单评论功能 · 交互原型</h1>
+  <p>配合《SmartShot 榜单评论功能 PRD》使用。左侧手机上方可切"榜单侧 / 社区侧"：榜单侧点视频卡 → 视频页 → 右轨评论按钮 → 半屏发评论；社区侧为打通方案版本 A 的球筐 feed，点回合卡拉起同一条评论流。右侧为入口清单、状态件与通知闭环。</p>
+</header>
+<div class="main">
+
+  <div class="phone-col">
+    <div class="switch"><span class="sw on" onclick="showRank();setSw(this)">榜单侧</span><span class="sw" onclick="goCommunity();setSw(this)">社区侧 · 球筐</span></div>
+    <div class="phone">
+      <!-- 榜单页 -->
+      <div class="scr" id="scr-list">
+        <div class="tabs"><span class="tab on">风云榜</span><span class="tab">球速榜</span><span class="tab">击球数榜</span></div>
+        <div class="banner"><span>参与排行 赢好礼</span><b>去参与</b></div>
+        <div class="mystrip">本月风云分 <b>4.71</b><span class="rk">第 15 名</span></div>
+        <div class="podium">
+          <div class="pod p2"><div class="ava">陈</div><div class="nm">陈*飞</div><div class="sc">4.66</div></div>
+          <div class="pod p1"><div class="ava">李</div><div class="nm">李*日</div><div class="sc">4.71</div></div>
+          <div class="pod p3"><div class="ava">王</div><div class="nm">王*</div><div class="sc">4.58</div></div>
+        </div>
+        <div class="grid">
+          <div class="vcard" onclick="goVideo(this)" data-c="12">
+            <div class="thumb"><span class="scorechip">168 km/h</span></div>
+            <div class="meta"><span>李*日 · 7-6</span><span class="cchip"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg><i class="cc">12</i></span></div>
+          </div>
+          <div class="vcard" onclick="goVideo(this)" data-c="5">
+            <div class="thumb"><span class="scorechip">167 km/h</span></div>
+            <div class="meta"><span>王* · 7-6</span><span class="cchip"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg><i class="cc">5</i></span></div>
+          </div>
+          <div class="vcard" onclick="goVideo(this)" data-c="0">
+            <div class="thumb"><span class="scorechip">161 km/h</span></div>
+            <div class="meta"><span>赵* · 7-5</span><span class="cchip zero" style="visibility:hidden"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg><i class="cc">0</i></span></div>
+          </div>
+          <div class="vcard" onclick="goVideo(this)" data-c="3">
+            <div class="thumb"><span class="scorechip">158 km/h</span></div>
+            <div class="meta"><span>周* · 7-5</span><span class="cchip"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg><i class="cc">3</i></span></div>
+          </div>
+        </div>
+        <div class="bottombar"><span style="cursor:pointer" onclick="goHonor()">我的排名：第 15 名 ›</span><button>分享我的榜</button></div>
+      </div>
+
+      <!-- 视频页 -->
+      <div class="scr hidden" id="scr-video">
+        <div class="video">
+          <div class="court"></div>
+          <div class="back" onclick="goList()">‹</div>
+          <div class="rail">
+            <div class="rail-ava">李</div>
+            <div class="rail-btn" id="likeBtn" onclick="toggleLike()">
+              <svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg>
+              <span id="likeCnt">2000</span>
+            </div>
+            <div class="rail-btn cmt" onclick="openSheet()">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>
+              <span id="cmtCnt">12</span>
+            </div>
+            <div class="rail-btn">
+              <svg viewBox="0 0 24 24"><path d="M14 5l7 7-7 7v-4H3v-6h11V5z"/></svg>
+              <span>分享</span>
+            </div>
+          </div>
+          <div class="vfoot">
+            <span class="logo">SS 回合数据</span><span class="tag">#网球生活日记</span>
+            <div class="capline">2026-7-6 14:00 · 东方体育中心 1 号场地</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 荣誉榜页 -->
+      <div class="scr hidden" id="scr-honor">
+        <div class="hhead"><span class="hback" onclick="goList()">‹</span>荣誉榜</div>
+        <div class="hcard">
+          <div class="hrow">
+            <div class="hcell"><i>荣誉累计</i><b>8</b></div>
+            <div class="hcell"><i>最高月击球</i><b>168</b></div>
+            <div class="hcell"><i>最高球速</i><b>168<small>km/h</small></b></div>
+          </div>
+          <div class="hrow">
+            <div class="hcell"><i>点赞累计</i><b>8</b></div>
+            <div class="hcell"><i>击球最高排名</i><b>10</b></div>
+            <div class="hcell"><i>球速最高排名</i><b>12</b></div>
+          </div>
+        </div>
+        <div class="htabs"><span class="on">本月记录</span><span>历史荣誉</span></div>
+        <div class="hrec">
+          <div class="hrec-h">2026-7-6 14:00 · 东方体育中心 1 号场地</div>
+          <div class="hrec-stats"><div><b>168</b><i>km/h</i></div><div><b>167</b><i>个</i></div></div>
+          <div class="hrec-act">
+            <span class="act"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg>2000</span>
+            <span class="act" onclick="openSheet()"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>12</span>
+          </div>
+        </div>
+        <div class="hrec">
+          <div class="hrec-h">2026-7-1 14:00 · 东方体育中心 1 号场地</div>
+          <div class="hrec-stats"><div><b>168</b><i>km/h</i></div><div><b>167</b><i>个</i></div></div>
+          <div class="hrec-act">
+            <span class="act"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg>1</span>
+            <span class="act" onclick="openSheet()"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 社区 · 球筐（打通方案版本 A 窗口） -->
+      <div class="scr hidden" id="scr-community">
+        <div class="chead"><span class="ttl">球筐</span><span class="pub">+</span></div>
+        <div class="ctabs"><span class="on">推荐</span><span>最新</span></div>
+        <div class="topics"><span class="topic">#网球生活日记</span><span class="topic">#界内之王</span><span class="topic">#我的网球瞬间</span></div>
+        <div class="wfall">
+          <div class="wcol">
+            <div class="pcard round" onclick="communitySheet()">
+              <div class="cov g1"><span class="roundtag">回合</span><span class="fromtag">来自球速榜 · 168 km/h</span></div>
+              <div class="ttl">168 km/h 的发球炸了！这速度能上榜吗</div>
+              <div class="meta"><span class="ava">李</span><span class="nm">李日日</span><span class="lkc"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg>2000</span><span class="cmtc"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>12</span></div>
+            </div>
+            <div class="pcard">
+              <div class="cov g2"></div>
+              <div class="ttl">学网球第三个月，终于学会上旋了</div>
+              <div class="meta"><span class="ava">陈</span><span class="nm">陈*飞</span><span class="lkc"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg>89</span></div>
+            </div>
+          </div>
+          <div class="wcol">
+            <div class="pcard">
+              <div class="cov g3"></div>
+              <div class="ttl">大家穿线多少磅？帮我参考下</div>
+              <div class="meta"><span class="ava">张</span><span class="nm">穿线师老张</span><span class="lkc"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg>45</span></div>
+            </div>
+            <div class="pcard round" onclick="communitySheet()">
+              <div class="cov g2"><span class="roundtag">回合</span></div>
+              <div class="ttl">156 拍多回合，今天的体能拉满了</div>
+              <div class="meta"><span class="ava">周</span><span class="nm">周*</span><span class="lkc"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg>320</span><span class="cmtc"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>3</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="tabbar">
+          <div class="ti"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6h-6v6H3z"/></svg>首页</div>
+          <div class="ti"><svg viewBox="0 0 24 24"><path d="M6 3h12l2 5H4l2-5zm-2 7h16v11H4V10z"/></svg>榜单</div>
+          <div class="ti"><svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16zm1 7V8h-2v3H8v2h3v3h2v-3h3v-2h-3z"/></svg>发布</div>
+          <div class="ti on"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>社区</div>
+          <div class="ti"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-3.3 0-7 1.7-7 4v2h14v-2c0-2.3-3.7-4-7-4z"/></svg>我的</div>
+        </div>
+      </div>
+
+      <!-- 评论半屏（手机级浮层，视频页/荣誉榜均可拉起） -->
+        <div class="sheet hidden" id="sheet">
+          <div class="sheet-head">评论 <span id="sheetCnt">12</span><span class="tip">热评置顶 · 其余按时间倒序</span></div>
+          <div class="clist" id="clist">
+            <div class="citem">
+              <div class="ava">网</div>
+              <div class="body">
+                <div class="nm">网球小学生<span class="badge-hot">热评</span></div>
+                <div class="txt">这球速离谱，对面拍子碰到了吗？</div>
+                <div class="tm">7-6 15:02</div>
+              </div>
+              <div class="like" onclick="toggleCLike(this,86)"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg><span>86</span></div>
+            </div>
+            <div class="citem">
+              <div class="ava">李</div>
+              <div class="body">
+                <div class="nm">李日日<span class="badge-master">作者</span></div>
+                <div class="txt">哈哈碰到了，就是没接住。</div>
+                <div class="tm">7-6 15:20</div>
+              </div>
+              <div class="like" onclick="toggleCLike(this,12)"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg><span>12</span></div>
+            </div>
+            <div class="citem">
+              <div class="ava">穿</div>
+              <div class="body">
+                <div class="nm">穿线师老张</div>
+                <div class="txt">你穿线多少磅？这爆发力羡慕了。</div>
+                <div class="tm">7-6 16:41</div>
+              </div>
+              <div class="like" onclick="toggleCLike(this,3)"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg><span>3</span></div>
+            </div>
+          </div>
+          <div class="inputbar">
+            <input id="cin" maxlength="500" placeholder="说点什么…">
+            <button onclick="sendCmt()">发送</button>
+          </div>
+        </div>
+        <div class="toast hidden" id="toast"></div>
+      </div>
+    </div>
+    <div class="cap">原型 · 评论以回合视频 ID 为键，榜单三入口 + 球筐回合卡（版本 A）同一条流</div>
+  </div>
+
+  <div class="side">
+    <div class="card">
+      <h3>三个入口，同一条评论流</h3>
+      <div class="row">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg></div>
+        <div class="t"><b>视频页右轨评论按钮</b>（主入口）：点赞与分享之间，挂计数气泡，点击拉起半屏；0 条不挂气泡，超 {M} 显示 {M}+。</div>
+      </div>
+      <div class="row">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 6h16v10H4z"/></svg></div>
+        <div class="t"><b>榜单视频卡评论数</b>（曝光入口）：分数 chip 旁同款小 chip，纯曝光不拉半屏；0 条隐藏（见左屏第三张卡）。</div>
+      </div>
+      <div class="row">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M6 3h12l2 5H4l2-5zm-2 7h16v11H4V10z"/></svg></div>
+        <div class="t"><b>荣誉榜记录条评论</b>（用户视角）：点赞按钮旁加评论按钮与计数，用户日常扫到自己回合下的讨论。</div>
+      </div>
+      <div class="cap">入口清单 · 计数跨风云/球速/击球数榜聚合</div>
+    </div>
+
+    <div class="card">
+      <h3>空 / 加载 / 异常态</h3>
+      <div class="states">
+        <div class="state"><div class="lb">空态</div><div class="bx">还没有评论<br>来抢沙发</div></div>
+        <div class="state"><div class="lb">加载</div><div class="bx" style="display:block"><div class="skl"></div><div class="skl"></div><div class="skl"></div></div></div>
+        <div class="state"><div class="lb">异常</div><div class="bx">加载失败<br>点击重试</div></div>
+      </div>
+      <div class="cap">发送失败 toast"网络异常，点击重试"，输入不丢字</div>
+    </div>
+
+    <div class="card">
+      <h3>通知闭环</h3>
+      <div class="notify">王* 评论了你的回合："这球速离谱"<div class="sub">点通知直达评论区并定位该条</div></div>
+      <div class="notify">李日日回复了你：哈哈碰到了，就是没接住<div class="sub">看榜者回访，讨论留在榜单</div></div>
+      <div class="notify">你的评论获得 3 个赞<div class="sub">{T} 分钟内多次点赞合并为一条</div></div>
+      <div class="cap">通道：站内消息中心 + 微信订阅消息</div>
+    </div>
+
+    <div class="card">
+      <h3>社区侧 · 球筐回合卡（版本 A 窗口）</h3>
+      <div class="row">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg></div>
+        <div class="t"><b>入口</b>：小程序顶层社区 tab 进球筐 feed；带"回合"角标的卡与榜单视频同源（打通方案版本 A），普通发布卡形态不变。</div>
+      </div>
+      <div class="row">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg></div>
+        <div class="t"><b>评论同源</b>：点回合卡拉起同一条评论半屏，计数与榜单侧实时一致；社区里新评论同样回流榜单。</div>
+      </div>
+      <div class="row">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M14 5l7 7-7 7v-4H3v-6h11V5z"/></svg></div>
+        <div class="t"><b>榜单 → 球筐</b>：维持现行手动分享链（分享弹层"分享到球筐"、报告页入口），本 PRD 不改；版本 B 时社区不显示榜单评论数。</div>
+      </div>
+      <div class="cap">社区侧为球筐现有形态，本 PRD 只定义回合卡的评论同源展示</div>
+    </div>
+
+    <div class="card">
+      <h3>与打通方案两版的边界</h3>
+      <div class="ab">
+        <div class="v va"><b>版本 A · Strava 化</b>评论流与社区回合卡同源，一条评论榜单/社区两个窗口都可见。</div>
+        <div class="v vb"><b>版本 B · 虎扑化</b>评论流仅榜单侧独立存储，社区不可见。</div>
+      </div>
+      <div class="cap">前端交互两版一致，数据归属由后端 {comment_scope} 决定</div>
+    </div>
+  </div>
+</div>
+
+<script>
+var cmtCount = 12, liked = false, likeCount = 2000, curCard = null;
+function hideAllScrs(){
+  ['scr-list','scr-video','scr-honor','scr-community'].forEach(function(id){ document.getElementById(id).classList.add('hidden'); });
+  document.getElementById('sheet').classList.add('hidden');
+}
+function goVideo(card){
+  curCard = card;
+  cmtCount = parseInt(card.getAttribute('data-c'),10) || 0;
+  hideAllScrs();
+  document.getElementById('scr-video').classList.remove('hidden');
+  syncCount();
+  if(cmtCount === 0){ document.getElementById('clist').innerHTML = '<div style="text-align:center;color:#8b95a5;font-size:12px;padding:40px 0">还没有评论，来抢沙发</div>'; }
+}
+function goList(){
+  hideAllScrs();
+  document.getElementById('scr-list').classList.remove('hidden');
+  if(curCard){ curCard.setAttribute('data-c', cmtCount); var cc = curCard.querySelector('.cc'); var chip = curCard.querySelector('.cchip'); cc.textContent = cmtCount; chip.style.visibility = cmtCount>0 ? 'visible':'hidden'; }
+}
+function goHonor(){
+  hideAllScrs();
+  document.getElementById('scr-honor').classList.remove('hidden');
+}
+function goCommunity(){
+  hideAllScrs();
+  document.getElementById('scr-community').classList.remove('hidden');
+}
+function showRank(){ goList(); }
+function setSw(el){
+  document.querySelectorAll('.sw').forEach(function(s){ s.classList.remove('on'); });
+  el.classList.add('on');
+}
+function communitySheet(){ cmtCount = 12; syncCount(); openSheet(); }
+function openSheet(){ document.getElementById('sheet').classList.remove('hidden'); }
+function syncCount(){
+  document.getElementById('cmtCnt').textContent = cmtCount;
+  document.getElementById('sheetCnt').textContent = cmtCount;
+}
+function toggleLike(){
+  liked = !liked; likeCount += liked?1:-1;
+  document.getElementById('likeBtn').classList.toggle('liked', liked);
+  document.getElementById('likeCnt').textContent = likeCount;
+}
+function toggleCLike(el, base){
+  var on = el.classList.toggle('on');
+  el.querySelector('span').textContent = base + (on?1:0);
+}
+function sendCmt(){
+  var inp = document.getElementById('cin'); var v = inp.value.trim();
+  if(!v){ toast('先写点什么吧'); return; }
+  var empty = document.querySelector('#clist div[style]');
+  if(empty && empty.textContent.indexOf('抢沙发')>=0){ document.getElementById('clist').innerHTML=''; }
+  var html = '<div class="citem"><div class="ava">我</div><div class="body"><div class="nm">我</div><div class="txt"></div><div class="tm">刚刚</div></div><div class="like" onclick="toggleCLike(this,0)"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg><span>0</span></div></div>';
+  var list = document.getElementById('clist');
+  list.insertAdjacentHTML('afterbegin', html);
+  list.firstChild.querySelector('.txt').textContent = v;
+  inp.value = '';
+  cmtCount++; syncCount();
+  toast('评论已发送');
+}
+function toast(msg){
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.classList.remove('hidden');
+  setTimeout(function(){ t.classList.add('hidden'); }, 1500);
+}
+/* 截图模式：?shot=list/video/sheet/empty/honor/community/comsheet/cards */
+(function(){
+  var s = new URLSearchParams(location.search).get('shot');
+  if(!s) return;
+  document.body.classList.add('shot');
+  if(s === 'cards'){ document.body.classList.add('cards'); return; }
+  var cards = document.querySelectorAll('.vcard');
+  if(s === 'video'){ goVideo(cards[0]); }
+  else if(s === 'sheet'){ goVideo(cards[0]); openSheet(); }
+  else if(s === 'empty'){ goVideo(cards[2]); openSheet(); }
+  else if(s === 'honor'){ goHonor(); }
+  else if(s === 'community'){ goCommunity(); }
+  else if(s === 'comsheet'){ goCommunity(); communitySheet(); }
+})();
+</script>
+</body>
+</html>
