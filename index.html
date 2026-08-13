@@ -170,6 +170,16 @@ header p{font-size:13px;color:var(--ink2);margin-top:6px;}
 .confirm .btns span{flex:1;border-radius:8px;padding:8px 0;font-size:13px;cursor:pointer;}
 .confirm .b-cancel{background:#f0f2f6;color:var(--ink2);}
 .confirm .b-del{background:#d64545;color:#fff;}
+.authsheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:16px 16px 0 0;z-index:6;box-shadow:0 -8px 24px rgba(28,35,48,.18);padding:16px 16px 12px;}
+.authsheet b{font-size:14px;display:block;text-align:center;}
+.auth-list{margin:12px 0 14px;display:flex;flex-direction:column;gap:8px;}
+.auth-item{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--ink2);line-height:1.6;}
+.auth-item .dot{flex:0 0 6px;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-top:6px;}
+.auth-btns{display:flex;gap:10px;}
+.auth-btns span{flex:1;text-align:center;border-radius:10px;padding:10px 0;font-size:13px;cursor:pointer;}
+.auth-ok{background:var(--accent);color:#fff;}
+.auth-no{background:#f0f2f6;color:var(--ink2);}
+.auth-tip{font-size:10.5px;color:var(--ink3);text-align:center;margin-top:10px;}
 
 /* 社区 · 球筐 */
 .chead{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);}
@@ -186,8 +196,11 @@ header p{font-size:13px;color:var(--ink2);margin-top:6px;}
 .pcard .cov.g1{height:128px;background:linear-gradient(160deg,#4a5563,#2b333d);}
 .pcard .cov.g2{height:92px;background:linear-gradient(160deg,#7f8ea3,#55627a);}
 .pcard .cov.g3{height:104px;background:linear-gradient(160deg,#9aa7b8,#6b7889);}
-.pcard.round .cov.g1::after{content:"";position:absolute;inset:16% 12%;border:1px solid rgba(255,255,255,.35);}
+.pcard .cov.g1::after{content:"";position:absolute;inset:16% 12%;border:1px solid rgba(255,255,255,.35);}
 .roundtag{position:absolute;left:6px;top:6px;background:var(--accent);color:#fff;font-size:10px;border-radius:5px;padding:2px 6px;}
+.opstag{position:absolute;left:6px;top:6px;background:var(--warn);color:#fff;font-size:10px;border-radius:5px;padding:2px 6px;}
+.rankcard{margin:4px 8px 6px;border:1px solid var(--accent-line);background:var(--accent-soft);border-radius:8px;padding:7px 10px;font-size:11px;color:var(--ink2);cursor:pointer;}
+.rankcard b{color:var(--accent);}
 .fromtag{position:absolute;right:6px;bottom:6px;background:rgba(28,35,48,.72);color:#fff;font-size:10px;border-radius:5px;padding:2px 6px;}
 .pcard .ttl{font-size:12px;line-height:1.5;padding:8px 8px 4px;color:var(--ink);}
 .pcard .meta{display:flex;align-items:center;gap:5px;padding:2px 8px 8px;font-size:10px;color:var(--ink3);}
@@ -217,13 +230,14 @@ body.shot.cards .side{display:flex;}
 <body>
 <header>
   <h1>社区×排行榜打通 · 评论功能 · 交互原型</h1>
-  <p>配合《SmartShot 社区×排行榜打通 · 评论功能 PRD》使用。左侧切"榜单侧 / 社区侧"与"访客 / 作者视角"：榜单侧点卡进视频页、右轨半屏发评论；社区侧回合卡进共享详情页、在榜 chip 回跳定位；作者视角可编辑正文、删除自己的帖子。</p>
+  <p>配合《SmartShot 社区×排行榜打通 · 评论功能 PRD》使用。左侧切"榜单侧 / 社区侧"与"访客 / 作者视角"：榜单侧点卡进视频页、右轨半屏发评论；社区侧回合卡进共享详情页、在榜 chip 回跳定位；作者视角可编辑正文、删除自己的帖子。社区侧还可切"方案 A · Strava 化 / 方案 B · 虎扑化"两种社区窗口。</p>
 </header>
 <div class="main">
 
   <div class="phone-col">
     <div class="switch"><span class="sw on" onclick="showRank();setSw(this)">榜单侧</span><span class="sw" onclick="goCommunity();setSw(this)">社区侧 · 球筐</span></div>
     <div class="switch rolesw"><span class="sw role on" data-role="guest" onclick="setRole('guest',this)">访客视角</span><span class="sw role" data-role="author" onclick="setRole('author',this)">作者视角 · 李日日</span></div>
+    <div class="switch rolesw hidden" id="planSw"><span class="sw plan on" data-plan="a" onclick="setPlan('a',this)">方案 A · Strava 化</span><span class="sw plan" data-plan="b" onclick="setPlan('b',this)">方案 B · 虎扑化</span></div>
     <div class="phone">
       <!-- 榜单页 -->
       <div class="scr" id="scr-list">
@@ -272,7 +286,7 @@ body.shot.cards .side{display:flex;}
               <svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>
               <span id="cmtCnt">12</span>
             </div>
-            <div class="rail-btn">
+            <div class="rail-btn" onclick="shareToBasket()">
               <svg viewBox="0 0 24 24"><path d="M14 5l7 7-7 7v-4H3v-6h11V5z"/></svg>
               <span>分享</span>
             </div>
@@ -359,6 +373,48 @@ body.shot.cards .side{display:flex;}
         </div>
       </div>
 
+      <!-- 社区 · 球筐（打通方案版本 B 窗口 · 虎扑化） -->
+      <div class="scr hidden" id="scr-community-b">
+        <div class="chead"><span class="ttl">球筐</span><span class="pub">+</span></div>
+        <div class="ctabs"><span class="on">推荐</span><span>最新</span></div>
+        <div class="topics"><span class="topic">#本周TOP10回合</span><span class="topic">#网球生活日记</span><span class="topic">#界内之王</span></div>
+        <div class="wfall">
+          <div class="wcol">
+            <div class="pcard" onclick="openPostSheet()">
+              <div class="cov g1"><span class="fromtag">从榜单分享</span></div>
+              <div class="ttl">168 km/h 的发球炸了！大家给我点赞</div>
+              <div class="rankcard" onclick="event.stopPropagation();goRank()"><b>球速榜 · 第 1 名</b> · 获赞 2000 · 距第 2 名领先 12 个赞 ›</div>
+              <div class="meta"><span class="ava">李</span><span class="nm">李日日</span><span class="lkc"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg>2000</span><span class="cmtc"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>8</span></div>
+            </div>
+            <div class="pcard">
+              <div class="cov g2"></div>
+              <div class="ttl">学网球第三个月，终于学会上旋了</div>
+              <div class="meta"><span class="ava">陈</span><span class="nm">陈*飞</span><span class="lkc"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg>89</span></div>
+            </div>
+          </div>
+          <div class="wcol">
+            <div class="pcard" onclick="openPostSheet()">
+              <div class="cov g3"><span class="opstag">运营战报</span></div>
+              <div class="ttl">本周TOP10回合｜第 1 名发球破场馆纪录</div>
+              <div class="rankcard" onclick="event.stopPropagation();goRank()"><b>本周风云榜</b> · 李*日 第 1 名 · 查看完整榜单 ›</div>
+              <div class="meta"><span class="ava">狮</span><span class="nm">球筐小狮子</span><span class="lkc"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg>126</span><span class="cmtc"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>23</span></div>
+            </div>
+            <div class="pcard">
+              <div class="cov g3"></div>
+              <div class="ttl">大家穿线多少磅？帮我参考下</div>
+              <div class="meta"><span class="ava">张</span><span class="nm">穿线师老张</span><span class="lkc"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg>45</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="tabbar">
+          <div class="ti"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6h-6v6H3z"/></svg>首页</div>
+          <div class="ti"><svg viewBox="0 0 24 24"><path d="M6 3h12l2 5H4l2-5zm-2 7h16v11H4V10z"/></svg>榜单</div>
+          <div class="ti"><svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16zm1 7V8h-2v3H8v2h3v3h2v-3h3v-2h-3z"/></svg>发布</div>
+          <div class="ti on"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>社区</div>
+          <div class="ti"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-3.3 0-7 1.7-7 4v2h14v-2c0-2.3-3.7-4-7-4z"/></svg>我的</div>
+        </div>
+      </div>
+
       <!-- 作者管理浮层：菜单 / 编辑半屏 / 删除确认 -->
       <div class="menusheet hidden" id="menuSheet">
         <div class="menu-item" onclick="openEdit()">编辑正文</div>
@@ -374,6 +430,45 @@ body.shot.cards .side{display:flex;}
         <b>删除这条帖子？</b>
         <div class="txt">删除后回合卡从球筐 feed 移除，社区侧不再展示其评论；你在榜单上的名次与数据不受影响。</div>
         <div class="btns"><span class="b-cancel" onclick="closeDel()">取消</span><span class="b-del" onclick="doDel()">删除</span></div>
+      </div>
+      <div class="authsheet hidden" id="authSheet">
+        <b>分享回合到球筐</b>
+        <div class="auth-list">
+          <div class="auth-item"><span class="dot"></span>将以你的账号发布到球筐，昵称跟随社区展示口径，头像为默认兜底头像。</div>
+          <div class="auth-item"><span class="dot"></span>发布后他人可见、可评论、可点赞；你可随时编辑正文或删除帖子。</div>
+          <div class="auth-item"><span class="dot"></span>可在 我的-设置 关闭"允许我的回合进入球筐"，关闭后存量回合卡下架，榜单不受影响。</div>
+        </div>
+        <div class="auth-btns"><span class="auth-no" onclick="closeAuth()">再想想</span><span class="auth-ok" onclick="agreeAuth()">同意并发布</span></div>
+        <div class="auth-tip">首次分享需明示同意 · 仅自己的回合可分享到球筐</div>
+      </div>
+
+      <!-- 帖子评论半屏（版本 B：帖子自己的评论流，与榜单评论流独立不同步） -->
+      <div class="sheet hidden" id="postSheet">
+        <div class="sheet-head">帖子评论 <span>8</span><span class="tip">与榜单评论流独立 · 两侧不同步</span></div>
+        <div class="clist">
+          <div class="citem">
+            <div class="ava">网</div>
+            <div class="body">
+              <div class="nm">网球小学生<span class="badge-hot">热评</span></div>
+              <div class="txt">这速度哪里来的，求球拍型号！</div>
+              <div class="tm">7-6 18:20</div>
+            </div>
+            <div class="like" onclick="toggleCLike(this,5)"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg><span>5</span></div>
+          </div>
+          <div class="citem">
+            <div class="ava">穿</div>
+            <div class="body">
+              <div class="nm">穿线师老张</div>
+              <div class="txt">第一名牛逼，改天约一场。</div>
+              <div class="tm">7-7 09:12</div>
+            </div>
+            <div class="like" onclick="toggleCLike(this,2)"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg><span>2</span></div>
+          </div>
+        </div>
+        <div class="inputbar">
+          <input maxlength="500" placeholder="说点什么…">
+          <button onclick="toast('评论已发送（帖子评论流）')">发送</button>
+        </div>
       </div>
 
       <!-- 评论半屏（手机级浮层，视频页/荣誉榜均可拉起） -->
@@ -415,7 +510,7 @@ body.shot.cards .side{display:flex;}
         </div>
         <div class="toast hidden" id="toast"></div>
       </div>
-    <div class="cap">原型 · 评论以回合视频 ID 为键，榜单三入口 + 球筐回合卡（版本 A）同一条流</div>
+    <div class="cap">原型 · 评论以回合视频 ID 为键：版本 A 榜单三入口 + 球筐回合卡同一条流；版本 B 榜单评论自闭环、帖子带榜卡回流</div>
   </div>
 
   <div class="side">
@@ -472,25 +567,47 @@ body.shot.cards .side{display:flex;}
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-3.3 0-7 1.7-7 4v2h14v-2c0-2.3-3.7-4-7-4z"/></svg></div>
         <div class="t"><b>作者管理</b>：帖子作者即视频拥有人；作者看自己回合详情页可经右上 ⋯ 编辑正文、删除帖子，删除只影响社区窗口，榜单不受影响。</div>
       </div>
+      <div class="row">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v3h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1V7a5 5 0 0 1 5-5zm3 8V7a3 3 0 0 0-6 0v3h6z"/></svg></div>
+        <div class="t"><b>分享授权</b>：首次分享需明示同意（以本人账号发布、可随时编辑删除）；我的-设置可关"允许我的回合进入球筐"，关后存量卡下架、榜单不受影响。</div>
+      </div>
       <div class="cap">社区侧为球筐现有形态，本 PRD 只定义回合卡的评论同源展示</div>
+    </div>
+
+    <div class="card">
+      <h3>社区侧 · 版本 B 窗口（虎扑化）</h3>
+      <div class="row">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg></div>
+        <div class="t"><b>无原生回合卡</b>：球筐 feed 不新增内容类型，榜单内容靠真人一键发帖承载——帖子内嵌榜单卡片（榜名 · 名次 · 差距文案），另有运营战报话题帖带榜卡置顶。</div>
+      </div>
+      <div class="row">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M14 5l7 7-7 7v-4H3v-6h11V5z"/></svg></div>
+        <div class="t"><b>榜卡回流</b>：点帖内榜单卡片直达榜单页并定位对应视频（高亮 {T} 秒）；帖子本身不内嵌榜单数据与评论，榜单侧体验不被社区稀释。</div>
+      </div>
+      <div class="row">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg></div>
+        <div class="t"><b>评论自闭环</b>：点帖拉起帖子自己的评论流，与榜单评论流独立、两侧不同步；帖子赞数为帖赞，与视频点赞数各算各的。</div>
+      </div>
+      <div class="cap">点赞有后果 / 通知回访 / 榜卡回流两版相同，差异仅在社区有无原生回合卡与评论是否同源</div>
     </div>
 
     <div class="card">
       <h3>与打通方案两版的边界</h3>
       <div class="ab">
-        <div class="v va"><b>版本 A · Strava 化</b>评论流与社区回合卡同源，一条评论榜单/社区两个窗口都可见。</div>
-        <div class="v vb"><b>版本 B · 虎扑化</b>评论流仅榜单侧独立存储，社区不可见。</div>
+        <div class="v va"><b>版本 A · Strava 化</b>回合卡原生动进球筐，评论流同源，一条评论榜单/社区两个窗口都可见。</div>
+        <div class="v vb"><b>版本 B · 虎扑化</b>无回合卡，真人帖＋榜卡＋运营战报承载，评论流两侧各自闭环。</div>
       </div>
-      <div class="cap">前端交互两版一致，数据归属由后端 {comment_scope} 决定</div>
+      <div class="cap">左侧"方案 A / 方案 B"开关即切两种社区窗口；数据归属由后端 {comment_scope} 决定</div>
     </div>
   </div>
 </div>
 
 <script>
-var cmtCount = 12, liked = false, likeCount = 2000, curCard = null, role = 'guest';
+var cmtCount = 12, liked = false, likeCount = 2000, curCard = null, role = 'guest', authorized = false, plan = 'a';
 function hideAllScrs(){
-  ['scr-list','scr-video','scr-honor','scr-community'].forEach(function(id){ document.getElementById(id).classList.add('hidden'); });
-  ['sheet','menuSheet','editSheet','delConfirm'].forEach(function(id){ document.getElementById(id).classList.add('hidden'); });
+  ['scr-list','scr-video','scr-honor','scr-community','scr-community-b'].forEach(function(id){ document.getElementById(id).classList.add('hidden'); });
+  ['sheet','menuSheet','editSheet','delConfirm','authSheet','postSheet'].forEach(function(id){ document.getElementById(id).classList.add('hidden'); });
+  document.getElementById('planSw').classList.add('hidden');
 }
 function goVideo(card){
   curCard = card;
@@ -534,6 +651,13 @@ function doDel(){
   toast('帖子已删除，榜单不受影响');
   goCommunity();
 }
+function shareToBasket(){
+  if(!(role === 'author' && isOwnVideo())){ toast('仅视频拥有人可分享到球筐'); return; }
+  if(!authorized){ document.getElementById('authSheet').classList.remove('hidden'); }
+  else { toast('已分享到球筐'); }
+}
+function closeAuth(){ document.getElementById('authSheet').classList.add('hidden'); }
+function agreeAuth(){ authorized = true; closeAuth(); toast('已发布，回合卡进入球筐'); }
 function goList(){
   hideAllScrs();
   document.getElementById('scr-list').classList.remove('hidden');
@@ -545,8 +669,17 @@ function goHonor(){
 }
 function goCommunity(){
   hideAllScrs();
-  document.getElementById('scr-community').classList.remove('hidden');
+  document.getElementById('planSw').classList.remove('hidden');
+  document.getElementById(plan === 'a' ? 'scr-community' : 'scr-community-b').classList.remove('hidden');
 }
+function setPlan(p, el){
+  plan = p;
+  document.querySelectorAll('.sw.plan').forEach(function(s){ s.classList.toggle('on', s.getAttribute('data-plan') === p); });
+  var showing = !document.getElementById('scr-community').classList.contains('hidden') || !document.getElementById('scr-community-b').classList.contains('hidden');
+  if(showing){ goCommunity(); }
+}
+function openPostSheet(){ document.getElementById('postSheet').classList.remove('hidden'); }
+function closePostSheet(){ document.getElementById('postSheet').classList.add('hidden'); }
 function showRank(){ goList(); }
 function setSw(el){
   document.querySelectorAll('.switch:not(.rolesw) .sw').forEach(function(s){ s.classList.remove('on'); });
@@ -589,7 +722,7 @@ function toast(msg){
   t.textContent = msg; t.classList.remove('hidden');
   setTimeout(function(){ t.classList.add('hidden'); }, 1500);
 }
-/* 截图模式：?shot=list/video/sheet/empty/honor/community/cards/author/authorvideo/menu/edit/delconfirm */
+/* 截图模式：?shot=list/video/sheet/empty/honor/community/cards/author/authorvideo/menu/edit/delconfirm/auth/planb/postsheet */
 (function(){
   var s = new URLSearchParams(location.search).get('shot');
   if(!s) return;
@@ -606,6 +739,9 @@ function toast(msg){
   else if(s === 'menu'){ setRole('author'); goVideo(cards[0]); openMenu(); }
   else if(s === 'edit'){ setRole('author'); goVideo(cards[0]); openEdit(); }
   else if(s === 'delconfirm'){ setRole('author'); goVideo(cards[0]); askDel(); }
+  else if(s === 'auth'){ setRole('author'); goVideo(cards[0]); shareToBasket(); }
+  else if(s === 'planb'){ setPlan('b'); goCommunity(); }
+  else if(s === 'postsheet'){ setPlan('b'); goCommunity(); openPostSheet(); }
 })();
 </script>
 </body>
