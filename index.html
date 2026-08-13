@@ -141,10 +141,35 @@ header p{font-size:13px;color:var(--ink2);margin-top:6px;}
 .act{display:inline-flex;align-items:center;gap:4px;cursor:pointer;}
 .act svg{width:14px;height:14px;fill:var(--ink3);}
 
-/* 榜单侧 / 社区侧切换 */
+/* 榜单侧 / 社区侧切换 + 身份切换 */
 .switch{display:flex;gap:8px;margin-bottom:10px;}
 .sw{font-size:12px;color:var(--ink2);background:#fff;border:1px solid var(--line);border-radius:16px;padding:5px 14px;cursor:pointer;}
 .sw.on{color:#fff;background:var(--accent);border-color:var(--accent);}
+.rolesw{justify-content:center;margin-top:10px;margin-bottom:0;}
+.rolesw .sw{font-size:11px;padding:4px 12px;}
+
+/* 作者管理：更多按钮 / 菜单 / 编辑半屏 / 确认框 */
+.morebtn{position:absolute;right:12px;top:14px;width:30px;height:30px;border-radius:50%;background:rgba(28,35,48,.5);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;letter-spacing:1px;cursor:pointer;z-index:4;}
+.menusheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:16px 16px 0 0;z-index:6;box-shadow:0 -8px 24px rgba(28,35,48,.18);padding:6px 0 10px;}
+.menu-item{padding:13px 20px;font-size:13px;cursor:pointer;}
+.menu-item.danger{color:#d64545;}
+.menu-cancel{margin:4px 12px 0;text-align:center;padding:12px;border-top:1px solid var(--line);font-size:13px;color:var(--ink3);cursor:pointer;}
+.editsheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:16px 16px 0 0;z-index:6;box-shadow:0 -8px 24px rgba(28,35,48,.18);display:flex;flex-direction:column;padding:14px;}
+.edit-head{display:flex;justify-content:space-between;align-items:center;font-size:13px;}
+.edit-head .cancel{color:var(--ink3);cursor:pointer;}
+.edit-head b{font-size:14px;}
+.edit-head .save{background:var(--accent);color:#fff;border-radius:14px;padding:5px 16px;font-size:12px;cursor:pointer;}
+.editsheet textarea{margin-top:12px;border:1px solid var(--line);border-radius:10px;padding:10px;font-size:13px;font-family:inherit;resize:none;height:110px;outline:none;}
+.editsheet textarea:focus{border-color:var(--accent-line);}
+.edit-hint{font-size:11px;color:var(--ink3);margin-top:8px;line-height:1.6;}
+.mine{position:absolute;right:6px;top:6px;background:var(--good);color:#fff;font-size:10px;border-radius:5px;padding:2px 6px;}
+.confirm{position:absolute;left:24px;right:24px;top:36%;background:#fff;border-radius:14px;z-index:7;box-shadow:0 8px 32px rgba(28,35,48,.28);padding:18px 16px 12px;text-align:center;}
+.confirm b{font-size:14px;display:block;}
+.confirm .txt{font-size:12px;color:var(--ink2);line-height:1.6;margin-top:8px;}
+.confirm .btns{display:flex;gap:10px;margin-top:14px;}
+.confirm .btns span{flex:1;border-radius:8px;padding:8px 0;font-size:13px;cursor:pointer;}
+.confirm .b-cancel{background:#f0f2f6;color:var(--ink2);}
+.confirm .b-del{background:#d64545;color:#fff;}
 
 /* 社区 · 球筐 */
 .chead{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);}
@@ -192,12 +217,13 @@ body.shot.cards .side{display:flex;}
 <body>
 <header>
   <h1>社区×排行榜打通 · 评论功能 · 交互原型</h1>
-  <p>配合《SmartShot 社区×排行榜打通 · 评论功能 PRD》使用。左侧手机上方可切"榜单侧 / 社区侧"：榜单侧点视频卡 → 视频页 → 右轨评论按钮 → 半屏发评论；社区侧为打通方案版本 A 的球筐 feed，点回合卡进共享视频详情页，详情页"在榜名次"chip 可回跳榜单定位。</p>
+  <p>配合《SmartShot 社区×排行榜打通 · 评论功能 PRD》使用。左侧手机上方可切"榜单侧 / 社区侧"与"访客 / 作者视角"：榜单侧点视频卡 → 视频页 → 右轨评论按钮 → 半屏发评论；社区侧为打通方案版本 A 的球筐 feed，点回合卡进共享视频详情页，详情页"在榜名次"chip 可回跳榜单定位。切到作者视角后，作者对自己回合卡的帖子可编辑正文、删除帖子。</p>
 </header>
 <div class="main">
 
   <div class="phone-col">
     <div class="switch"><span class="sw on" onclick="showRank();setSw(this)">榜单侧</span><span class="sw" onclick="goCommunity();setSw(this)">社区侧 · 球筐</span></div>
+    <div class="switch rolesw"><span class="sw role on" data-role="guest" onclick="setRole('guest',this)">访客视角</span><span class="sw role" data-role="author" onclick="setRole('author',this)">作者视角 · 李日日</span></div>
     <div class="phone">
       <!-- 榜单页 -->
       <div class="scr" id="scr-list">
@@ -235,6 +261,7 @@ body.shot.cards .side{display:flex;}
         <div class="video">
           <div class="court"></div>
           <div class="back" onclick="goList()">‹</div>
+          <div class="morebtn hidden" id="moreBtn" onclick="openMenu()">⋯</div>
           <div class="rail">
             <div class="rail-ava">李</div>
             <div class="rail-btn" id="likeBtn" onclick="toggleLike()">
@@ -299,8 +326,8 @@ body.shot.cards .side{display:flex;}
         <div class="topics"><span class="topic">#网球生活日记</span><span class="topic">#界内之王</span><span class="topic">#我的网球瞬间</span></div>
         <div class="wfall">
           <div class="wcol">
-            <div class="pcard round" onclick="comCard(0)">
-              <div class="cov g1"><span class="roundtag">回合</span><span class="fromtag">来自球速榜 · 168 km/h</span></div>
+            <div class="pcard round" id="myRound" onclick="comCard(0)">
+              <div class="cov g1"><span class="roundtag">回合</span><span class="fromtag">来自球速榜 · 168 km/h</span><span class="mine hidden" id="mineTag">我的帖子</span></div>
               <div class="ttl">168 km/h 的发球炸了！这速度能上榜吗</div>
               <div class="meta"><span class="ava">李</span><span class="nm">李日日</span><span class="lkc"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg>2000</span><span class="cmtc"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>12</span></div>
             </div>
@@ -330,6 +357,23 @@ body.shot.cards .side{display:flex;}
           <div class="ti on"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>社区</div>
           <div class="ti"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-3.3 0-7 1.7-7 4v2h14v-2c0-2.3-3.7-4-7-4z"/></svg>我的</div>
         </div>
+      </div>
+
+      <!-- 作者管理浮层：菜单 / 编辑半屏 / 删除确认 -->
+      <div class="menusheet hidden" id="menuSheet">
+        <div class="menu-item" onclick="openEdit()">编辑正文</div>
+        <div class="menu-item danger" onclick="askDel()">删除帖子</div>
+        <div class="menu-cancel" onclick="closeMenu()">取消</div>
+      </div>
+      <div class="editsheet hidden" id="editSheet">
+        <div class="edit-head"><span class="cancel" onclick="closeEdit()">取消</span><b>编辑帖子</b><span class="save" onclick="saveEdit()">保存</span></div>
+        <textarea id="editTa" maxlength="500">168 km/h 的发球炸了！这速度能上榜吗</textarea>
+        <div class="edit-hint">仅可编辑帖子正文，回合视频本体不可更换；保存后球筐卡片同步更新，上限 {N} 字。</div>
+      </div>
+      <div class="confirm hidden" id="delConfirm">
+        <b>删除这条帖子？</b>
+        <div class="txt">删除后回合卡从球筐 feed 移除，社区侧不再展示其评论；你在榜单上的名次与数据不受影响。</div>
+        <div class="btns"><span class="b-cancel" onclick="closeDel()">取消</span><span class="b-del" onclick="doDel()">删除</span></div>
       </div>
 
       <!-- 评论半屏（手机级浮层，视频页/荣誉榜均可拉起） -->
@@ -425,6 +469,10 @@ body.shot.cards .side{display:flex;}
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M14 5l7 7-7 7v-4H3v-6h11V5z"/></svg></div>
         <div class="t"><b>榜单 → 球筐</b>：维持现行手动分享链（分享弹层"分享到球筐"、报告页入口），本 PRD 不改；版本 B 时社区不显示榜单评论数。</div>
       </div>
+      <div class="row">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-3.3 0-7 1.7-7 4v2h14v-2c0-2.3-3.7-4-7-4z"/></svg></div>
+        <div class="t"><b>作者管理</b>：帖子作者即视频拥有人；作者看自己回合详情页可经右上 ⋯ 编辑正文、删除帖子，删除只影响社区窗口，榜单不受影响。</div>
+      </div>
       <div class="cap">社区侧为球筐现有形态，本 PRD 只定义回合卡的评论同源展示</div>
     </div>
 
@@ -440,10 +488,10 @@ body.shot.cards .side{display:flex;}
 </div>
 
 <script>
-var cmtCount = 12, liked = false, likeCount = 2000, curCard = null;
+var cmtCount = 12, liked = false, likeCount = 2000, curCard = null, role = 'guest';
 function hideAllScrs(){
   ['scr-list','scr-video','scr-honor','scr-community'].forEach(function(id){ document.getElementById(id).classList.add('hidden'); });
-  document.getElementById('sheet').classList.add('hidden');
+  ['sheet','menuSheet','editSheet','delConfirm'].forEach(function(id){ document.getElementById(id).classList.add('hidden'); });
 }
 function goVideo(card){
   curCard = card;
@@ -452,6 +500,40 @@ function goVideo(card){
   document.getElementById('scr-video').classList.remove('hidden');
   syncCount();
   if(cmtCount === 0){ document.getElementById('clist').innerHTML = '<div style="text-align:center;color:#8b95a5;font-size:12px;padding:40px 0">还没有评论，来抢沙发</div>'; }
+  applyAuthorUI();
+}
+function isOwnVideo(){ return !!curCard && curCard === document.querySelectorAll('.vcard')[0]; }
+function applyAuthorUI(){
+  var showMore = role === 'author' && !document.getElementById('scr-video').classList.contains('hidden') && isOwnVideo();
+  document.getElementById('moreBtn').classList.toggle('hidden', !showMore);
+  if(!showMore){ closeMenu(); }
+}
+function setRole(r, el){
+  role = r;
+  document.querySelectorAll('.sw.role').forEach(function(s){ s.classList.toggle('on', s.getAttribute('data-role') === r); });
+  document.getElementById('mineTag').classList.toggle('hidden', r !== 'author');
+  applyAuthorUI();
+}
+function openMenu(){ document.getElementById('menuSheet').classList.remove('hidden'); }
+function closeMenu(){ document.getElementById('menuSheet').classList.add('hidden'); }
+function openEdit(){ closeMenu(); document.getElementById('editSheet').classList.remove('hidden'); }
+function closeEdit(){ document.getElementById('editSheet').classList.add('hidden'); }
+function saveEdit(){
+  var v = document.getElementById('editTa').value.trim();
+  if(!v){ toast('正文不能为空'); return; }
+  document.querySelector('#myRound .ttl').textContent = v;
+  closeEdit();
+  toast('正文已更新');
+  goCommunity();
+}
+function askDel(){ closeMenu(); document.getElementById('delConfirm').classList.remove('hidden'); }
+function closeDel(){ document.getElementById('delConfirm').classList.add('hidden'); }
+function doDel(){
+  closeDel();
+  var card = document.getElementById('myRound');
+  if(card){ card.style.display = 'none'; }
+  toast('帖子已删除，榜单不受影响');
+  goCommunity();
 }
 function goList(){
   hideAllScrs();
@@ -468,7 +550,7 @@ function goCommunity(){
 }
 function showRank(){ goList(); }
 function setSw(el){
-  document.querySelectorAll('.sw').forEach(function(s){ s.classList.remove('on'); });
+  document.querySelectorAll('.switch:not(.rolesw) .sw').forEach(function(s){ s.classList.remove('on'); });
   el.classList.add('on');
 }
 function comCard(i){ goVideo(document.querySelectorAll('.vcard')[i]); }
@@ -508,7 +590,7 @@ function toast(msg){
   t.textContent = msg; t.classList.remove('hidden');
   setTimeout(function(){ t.classList.add('hidden'); }, 1500);
 }
-/* 截图模式：?shot=list/video/sheet/empty/honor/community/cards */
+/* 截图模式：?shot=list/video/sheet/empty/honor/community/cards/author/authorvideo/menu/edit/delconfirm */
 (function(){
   var s = new URLSearchParams(location.search).get('shot');
   if(!s) return;
@@ -520,6 +602,11 @@ function toast(msg){
   else if(s === 'empty'){ goVideo(cards[2]); openSheet(); }
   else if(s === 'honor'){ goHonor(); }
   else if(s === 'community'){ goCommunity(); }
+  else if(s === 'author'){ setRole('author'); goCommunity(); }
+  else if(s === 'authorvideo'){ setRole('author'); goVideo(cards[0]); }
+  else if(s === 'menu'){ setRole('author'); goVideo(cards[0]); openMenu(); }
+  else if(s === 'edit'){ setRole('author'); goVideo(cards[0]); openEdit(); }
+  else if(s === 'delconfirm'){ setRole('author'); goVideo(cards[0]); askDel(); }
 })();
 </script>
 </body>
