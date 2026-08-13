@@ -145,7 +145,7 @@ header p{font-size:13px;color:var(--ink2);margin-top:6px;}
 .switch{display:flex;gap:8px;margin-bottom:10px;}
 .sw{font-size:12px;color:var(--ink2);background:#fff;border:1px solid var(--line);border-radius:16px;padding:5px 14px;cursor:pointer;}
 .sw.on{color:#fff;background:var(--accent);border-color:var(--accent);}
-.rolesw{justify-content:center;margin-top:10px;margin-bottom:0;}
+.rolesw{justify-content:center;margin-top:6px;margin-bottom:0;}
 .rolesw .sw{font-size:11px;padding:4px 12px;}
 
 /* 作者管理：更多按钮 / 菜单 / 编辑半屏 / 确认框 */
@@ -217,7 +217,7 @@ body.shot.cards .side{display:flex;}
 <body>
 <header>
   <h1>社区×排行榜打通 · 评论功能 · 交互原型</h1>
-  <p>配合《SmartShot 社区×排行榜打通 · 评论功能 PRD》使用。左侧手机上方可切"榜单侧 / 社区侧"与"访客 / 作者视角"：榜单侧点视频卡 → 视频页 → 右轨评论按钮 → 半屏发评论；社区侧为打通方案版本 A 的球筐 feed，点回合卡进共享视频详情页，详情页"在榜名次"chip 可回跳榜单定位。切到作者视角后，作者对自己回合卡的帖子可编辑正文、删除帖子。</p>
+  <p>配合《SmartShot 社区×排行榜打通 · 评论功能 PRD》使用。左侧切"榜单侧 / 社区侧"与"访客 / 作者视角"：榜单侧点卡进视频页、右轨半屏发评论；社区侧回合卡进共享详情页、在榜 chip 回跳定位；作者视角可编辑正文、删除自己的帖子。</p>
 </header>
 <div class="main">
 
@@ -415,7 +415,6 @@ body.shot.cards .side{display:flex;}
         </div>
         <div class="toast hidden" id="toast"></div>
       </div>
-    </div>
     <div class="cap">原型 · 评论以回合视频 ID 为键，榜单三入口 + 球筐回合卡（版本 A）同一条流</div>
   </div>
 
