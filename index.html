@@ -693,7 +693,8 @@ function setSw(el){
 function comCard(i){ goVideo(document.querySelectorAll('.vcard')[i]); }
 function goRank(){
   goList();
-  if(curCard){ curCard.classList.add('hl'); setTimeout(function(){ curCard.classList.remove('hl'); }, 1600); }
+  var target = curCard || document.querySelectorAll('.vcard')[0];
+  if(target){ target.classList.add('hl'); setTimeout(function(){ target.classList.remove('hl'); }, 1600); }
 }
 function openSheet(){ document.getElementById('sheet').classList.remove('hidden'); }
 function syncCount(){
