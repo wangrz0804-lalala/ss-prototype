@@ -335,7 +335,7 @@ body.shot.cards .side{display:flex;}
 
       <!-- 社区 · 球筐（打通方案版本 A 窗口） -->
       <div class="scr hidden" id="scr-community">
-        <div class="chead"><span class="ttl">球筐</span><span class="pub">+</span></div>
+        <div class="chead"><span class="ttl">球筐</span><span class="pub" onclick="pubRound()">+</span></div>
         <div class="ctabs"><span class="on">推荐</span><span>最新</span></div>
         <div class="topics"><span class="topic">#网球生活日记</span><span class="topic">#界内之王</span><span class="topic">#我的网球瞬间</span></div>
         <div class="wfall">
@@ -375,7 +375,7 @@ body.shot.cards .side{display:flex;}
 
       <!-- 社区 · 球筐（打通方案版本 B 窗口 · 虎扑化） -->
       <div class="scr hidden" id="scr-community-b">
-        <div class="chead"><span class="ttl">球筐</span><span class="pub">+</span></div>
+        <div class="chead"><span class="ttl">球筐</span><span class="pub" onclick="pubRound()">+</span></div>
         <div class="ctabs"><span class="on">推荐</span><span>最新</span></div>
         <div class="topics"><span class="topic">#本周TOP10回合</span><span class="topic">#网球生活日记</span><span class="topic">#界内之王</span></div>
         <div class="wfall">
@@ -432,14 +432,14 @@ body.shot.cards .side{display:flex;}
         <div class="btns"><span class="b-cancel" onclick="closeDel()">取消</span><span class="b-del" onclick="doDel()">删除</span></div>
       </div>
       <div class="authsheet hidden" id="authSheet">
-        <b>分享回合到球筐</b>
+        <b id="authTitle">分享回合到球筐</b>
         <div class="auth-list">
           <div class="auth-item"><span class="dot"></span>将以你的账号发布到球筐，昵称跟随社区展示口径，头像为默认兜底头像。</div>
           <div class="auth-item"><span class="dot"></span>发布后他人可见、可评论、可点赞；你可随时编辑正文或删除帖子。</div>
           <div class="auth-item"><span class="dot"></span>可在 我的-设置 关闭"允许我的回合进入球筐"，关闭后存量回合卡下架，榜单不受影响。</div>
         </div>
         <div class="auth-btns"><span class="auth-no" onclick="closeAuth()">再想想</span><span class="auth-ok" onclick="agreeAuth()">同意并发布</span></div>
-        <div class="auth-tip">首次分享需明示同意 · 仅自己的回合可分享到球筐</div>
+        <div class="auth-tip">首次分享或发帖需明示同意 · 仅自己的回合可进入球筐</div>
       </div>
 
       <!-- 帖子评论半屏（版本 B：帖子自己的评论流，与榜单评论流独立不同步） -->
@@ -653,11 +653,16 @@ function doDel(){
 }
 function shareToBasket(){
   if(!(role === 'author' && isOwnVideo())){ toast('仅视频拥有人可分享到球筐'); return; }
-  if(!authorized){ document.getElementById('authSheet').classList.remove('hidden'); }
+  if(!authorized){ document.getElementById('authTitle').textContent = '分享回合到球筐'; document.getElementById('authSheet').classList.remove('hidden'); }
   else { toast('已分享到球筐'); }
 }
+function pubRound(){
+  if(role !== 'author'){ toast('登录后才能发布'); return; }
+  if(!authorized){ document.getElementById('authTitle').textContent = '发布回合帖到球筐'; document.getElementById('authSheet').classList.remove('hidden'); }
+  else { toast('已发布，回合帖进入球筐'); }
+}
 function closeAuth(){ document.getElementById('authSheet').classList.add('hidden'); }
-function agreeAuth(){ authorized = true; closeAuth(); toast('已发布，回合卡进入球筐'); }
+function agreeAuth(){ authorized = true; closeAuth(); toast('已发布，回合内容进入球筐'); }
 function goList(){
   hideAllScrs();
   document.getElementById('scr-list').classList.remove('hidden');
@@ -722,7 +727,7 @@ function toast(msg){
   t.textContent = msg; t.classList.remove('hidden');
   setTimeout(function(){ t.classList.add('hidden'); }, 1500);
 }
-/* 截图模式：?shot=list/video/sheet/empty/honor/community/cards/author/authorvideo/menu/edit/delconfirm/auth/planb/postsheet */
+/* 截图模式：?shot=list/video/sheet/empty/honor/community/cards/author/authorvideo/menu/edit/delconfirm/auth/pubauth/planb/postsheet */
 (function(){
   var s = new URLSearchParams(location.search).get('shot');
   if(!s) return;
@@ -740,6 +745,7 @@ function toast(msg){
   else if(s === 'edit'){ setRole('author'); goVideo(cards[0]); openEdit(); }
   else if(s === 'delconfirm'){ setRole('author'); goVideo(cards[0]); askDel(); }
   else if(s === 'auth'){ setRole('author'); goVideo(cards[0]); shareToBasket(); }
+  else if(s === 'pubauth'){ setRole('author'); goCommunity(); pubRound(); }
   else if(s === 'planb'){ setPlan('b'); goCommunity(); }
   else if(s === 'postsheet'){ setPlan('b'); goCommunity(); openPostSheet(); }
 })();
