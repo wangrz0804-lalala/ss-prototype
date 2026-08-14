@@ -448,7 +448,7 @@ body.shot.cards .side{display:flex;}
       <div class="editsheet hidden" id="editSheet">
         <div class="edit-head"><span class="cancel" onclick="closeEdit()">取消</span><b>编辑帖子</b><span class="save" onclick="saveEdit()">保存</span></div>
         <textarea id="editTa" maxlength="500">168 km/h 的发球炸了！这速度能上榜吗</textarea>
-        <div class="edit-hint">仅可编辑帖子正文，回合视频本体不可更换；保存后球筐卡片同步更新，上限 {N} 字。</div>
+        <div class="edit-hint">仅可编辑帖子正文，回合视频本体不可更换；保存后球筐卡片同步更新，上限 500 字。</div>
       </div>
       <div class="confirm hidden" id="delConfirm">
         <b>删除这条帖子？</b>
@@ -502,7 +502,7 @@ body.shot.cards .side{display:flex;}
         <b>分享与发帖设置</b>
         <div class="setrow">
           <div class="set-t">允许手动分享我的回合到球筐<div class="set-d">首次分享需明示同意；关闭不影响已发布帖子（可单独删除），再点分享将重新弹授权</div></div>
-          <span class="tgl on" id="tglShare" onclick="tglShareFn()"></span>
+          <span class="tgl" id="tglShare" onclick="tglShareFn()"></span>
         </div>
         <div class="setrow">
           <div class="set-t">允许我的回合自动发帖到球筐<div class="set-d">默认关；开启后新回合自动生成帖子（系统默认文案、无编辑环节）；关闭将批量下架自动发帖，手动分享的不受影响</div></div>
@@ -673,7 +673,7 @@ body.shot.cards .side{display:flex;}
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M14 5l7 7-7 7v-4H3v-6h11V5z"/></svg></div>
-        <div class="t"><b>榜卡回流</b>：点帖内榜单卡片直达榜单页并定位对应视频（高亮 {T} 秒）；帖子本身不内嵌榜单数据与评论，榜单侧体验不被社区稀释。</div>
+        <div class="t"><b>榜卡回流</b>：点帖内榜单卡片直达榜单页并定位对应视频（高亮 2 秒）；帖子本身不内嵌榜单数据与评论，榜单侧体验不被社区稀释。</div>
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg></div>
