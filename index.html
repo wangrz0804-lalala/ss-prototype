@@ -111,6 +111,7 @@ header .blk b{color:var(--accent);font-size:13px;}
 .row .ic svg{width:16px;height:16px;fill:var(--accent);}
 .row .t{font-size:12.5px;color:var(--ink2);line-height:1.55;}
 .row .t b{color:var(--ink);}
+.row .t .sub{display:block;font-size:11.5px;color:var(--ink3);line-height:1.5;margin-top:2px;}
 .states{display:flex;gap:10px;}
 .state{flex:1;border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center;}
 .state .lb{font-size:11px;color:var(--ink3);margin-bottom:8px;}
@@ -123,6 +124,7 @@ header .blk b{color:var(--accent);font-size:13px;}
 .ab .va{background:var(--good-soft);border:1px solid var(--good-line);color:var(--ink);}
 .ab .vb{background:#fafbfc;border:1px solid var(--line);color:var(--ink2);}
 .ab .v b{display:block;margin-bottom:4px;color:var(--ink);}
+.ab .v .sub{display:block;font-size:11.5px;color:var(--ink3);line-height:1.5;}
 
 /* 荣誉榜屏 */
 .hhead{padding:14px;text-align:center;font-weight:700;position:relative;border-bottom:1px solid var(--line);}
@@ -619,19 +621,25 @@ body.shot.cards .side{display:flex;}
       <h3>三个入口，同一条评论流</h3>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg></div>
-        <div class="t"><b>视频页右轨评论按钮</b>（主入口）：点赞与分享之间，挂计数气泡，点击拉起半屏；0 条不挂气泡，超 {M} 显示 {M}+。</div>
+        <div class="t"><b>视频页右轨评论按钮</b>（主入口）
+          <span class="sub">点赞与分享之间，挂计数气泡，点击拉起半屏；0 条不挂气泡，超 {M} 显示 {M}+。</span></div>
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 6h16v10H4z"/></svg></div>
-        <div class="t"><b>榜单视频卡评论数</b>（曝光入口）：分数 chip 旁同款小 chip，纯曝光不拉半屏；0 条隐藏（见左屏第三张卡）。</div>
+        <div class="t"><b>榜单视频卡评论数</b>（曝光入口）
+          <span class="sub">分数 chip 旁同款小 chip，纯曝光不拉半屏；0 条隐藏（见左屏第三张卡）。</span></div>
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M6 3h12l2 5H4l2-5zm-2 7h16v11H4V10z"/></svg></div>
-        <div class="t"><b>荣誉榜记录条评论</b>（用户视角）：点赞按钮旁加评论按钮与计数，用户日常扫到自己回合下的讨论。</div>
+        <div class="t"><b>荣誉榜记录条评论</b>（用户视角）
+          <span class="sub">点赞按钮旁加评论按钮与计数，用户日常扫到自己回合下的讨论。</span></div>
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v3h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1V7a5 5 0 0 1 5-5zm3 8V7a3 3 0 0 0-6 0v3h6z"/></svg></div>
-        <div class="t"><b>评论管理（长按）</b>：长按他人评论出"举报"（P0），复用社区现有举报入口与人工审核队列，toast"举报已受理"；作者在自己回合下长按他人评论额外出"删除"（P0，验收 35）；长按自己评论出"删除"（P1），半屏/右轨/视频卡/荣誉榜四处计数同步 -1。帖子评论流同规则、与榜单侧互不影响。</div>
+        <div class="t"><b>评论管理（长按）</b>
+          <span class="sub">他人评论出"举报"（P0），复用社区举报与人工审核队列，toast"举报已受理"。</span>
+          <span class="sub">作者在自己回合下长按他人评论额外出"删除"（P0，验收 35）。</span>
+          <span class="sub">自己评论出"删除"（P1），半屏/右轨/视频卡/荣誉榜四处计数同步 -1；帖子评论流同规则、与榜单侧互不影响。</span></div>
       </div>
       <div class="cap">入口清单 · 计数跨风云/球速/击球数榜聚合</div>
     </div>
@@ -658,31 +666,46 @@ body.shot.cards .side{display:flex;}
       <h3>社区侧 · 球筐回合卡（版本 A 窗口）</h3>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg></div>
-        <div class="t"><b>入口</b>：小程序顶层社区 tab 进球筐 feed；带"回合"角标的卡与榜单视频同源（打通方案版本 A），点卡进共享视频详情页，与榜单视频卡行为一致。</div>
+        <div class="t"><b>入口</b>
+          <span class="sub">小程序顶层社区 tab 进球筐 feed，带"回合"角标的卡与榜单视频同源（打通方案版本 A）；点卡进共享视频详情页，与榜单视频卡行为一致。</span></div>
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg></div>
-        <div class="t"><b>回跳与同源</b>：详情页挂"在榜名次"chip，点 chip 回跳对应榜单并定位该视频；右轨评论拉起同一条评论流，计数两侧实时一致。</div>
+        <div class="t"><b>回跳与同源</b>
+          <span class="sub">详情页挂"在榜名次"chip，点 chip 回跳对应榜单并定位该视频。</span>
+          <span class="sub">右轨评论拉起同一条评论流，计数两侧实时一致。</span></div>
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M14 5l7 7-7 7v-4H3v-6h11V5z"/></svg></div>
-        <div class="t"><b>榜单 → 球筐（本期新增 · 最高优先级）</b>：右轨"分享"弹选择半屏，两个去向——"分享到球筐"置顶，走授权 → 文案编辑 → 发布；"分享给微信好友"为现行卡片/图片分享，链路不改。仅本人回合可分享到球筐，他人视频点该选项 toast 拦截。版本 B 时社区不显示榜单评论数。</div>
+        <div class="t"><b>榜单 → 球筐</b>（本期新增 · 最高优先级）
+          <span class="sub">右轨"分享"弹选择半屏："分享到球筐"置顶，走授权 → 文案编辑 → 发布。</span>
+          <span class="sub">"分享给微信好友"为现行卡片/图片分享，链路不改。</span>
+          <span class="sub">仅本人回合可分享到球筐，他人视频点该选项 toast 拦截；版本 B 时社区不显示榜单评论数。</span></div>
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 6h16v10H4z"/></svg></div>
-        <div class="t"><b>复用球筐现行设计</b>：微信分享页加"分享到球筐"勾选（未进球筐才展示、带可得经验，微信分享完成直跳编辑页，已进球筐不展示）；经验同一内容不重复；编辑页 500 字内、最多 10 话题，榜单内容默认带对应榜话题（如 #超球速竞技）不可去除，地址自动场馆不可改；提示逻辑复用（球速超 100km/h 提示分享球速、制胜分提示精彩球）；点创建集锦则分享入口隐藏。</div>
+        <div class="t"><b>复用球筐现行设计</b>
+          <span class="sub">微信分享页加"分享到球筐"勾选：未进球筐才展示、带可得经验，分享完成直跳编辑页；经验同一内容不重复。</span>
+          <span class="sub">编辑页 500 字内、最多 10 话题；榜单内容默认带对应榜话题（如 #超球速竞技）不可去除，地址自动场馆不可改。</span>
+          <span class="sub">提示逻辑复用（球速超 100km/h 提示分享球速、制胜分提示精彩球）；点创建集锦则分享入口隐藏。</span></div>
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-3.3 0-7 1.7-7 4v2h14v-2c0-2.3-3.7-4-7-4z"/></svg></div>
-        <div class="t"><b>作者管理</b>：帖子作者即视频拥有人；作者看自己回合详情页可经右上 ⋯ 编辑正文、删除帖子，删除只影响社区窗口，榜单不受影响。</div>
+        <div class="t"><b>作者管理</b>
+          <span class="sub">帖子作者即视频拥有人；作者看自己回合详情页可经右上 ⋯ 编辑正文、删除帖子。</span>
+          <span class="sub">删除只影响社区窗口，榜单侧名次/视频卡/评论流不受影响。</span></div>
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v3h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1V7a5 5 0 0 1 5-5zm3 8V7a3 3 0 0 0-6 0v3h6z"/></svg></div>
-        <div class="t"><b>分享授权（一次性明示）</b>：首次在分享半屏点"分享到球筐"、或球筐 + 发帖时弹授权半屏，同意后进入文案编辑半屏、确认文案才发布；两条手动入口共享同一授权。</div>
+        <div class="t"><b>分享授权（一次性明示）</b>
+          <span class="sub">首次在分享半屏点"分享到球筐"、或球筐 + 发帖时弹授权半屏；同意后进入文案编辑半屏，确认文案才发布。</span>
+          <span class="sub">两条手动入口共享同一授权，任一入口同意后另一入口不再弹。</span></div>
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 6h16v10H4z"/></svg></div>
-        <div class="t"><b>自动发帖授权（设置开关）</b>：我的-设置默认关；开启后新回合自动发帖（系统默认文案、无编辑环节），关闭将批量下架自动发帖、手动分享的不受影响。两条授权相互独立，关闭任一不影响榜单。</div>
+        <div class="t"><b>自动发帖授权（设置开关）</b>
+          <span class="sub">我的-设置默认关；开启后新回合自动发帖（系统默认文案、无编辑环节）。</span>
+          <span class="sub">关闭将批量下架自动发帖，手动分享的不受影响；两条授权相互独立，关闭任一不影响榜单。</span></div>
       </div>
       <div class="cap">社区侧为球筐现有形态，本 PRD 只定义回合卡的评论同源展示</div>
     </div>
@@ -691,15 +714,21 @@ body.shot.cards .side{display:flex;}
       <h3>社区侧 · 版本 B 窗口（虎扑化）</h3>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg></div>
-        <div class="t"><b>无原生回合卡</b>：球筐 feed 不新增内容类型，榜单内容靠真人一键发帖承载——帖子内嵌榜单卡片（榜名 · 名次 · 差距文案），另有运营战报话题帖带榜卡置顶。</div>
+        <div class="t"><b>无原生回合卡</b>
+          <span class="sub">球筐 feed 不新增内容类型，榜单内容靠真人一键发帖承载。</span>
+          <span class="sub">帖子内嵌榜单卡片（榜名 · 名次 · 差距文案），另有运营战报话题帖带榜卡置顶。</span></div>
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M14 5l7 7-7 7v-4H3v-6h11V5z"/></svg></div>
-        <div class="t"><b>榜卡回流</b>：点帖内榜单卡片直达榜单页并定位对应视频（高亮 2 秒）；帖子本身不内嵌榜单数据与评论，榜单侧体验不被社区稀释。</div>
+        <div class="t"><b>榜卡回流</b>
+          <span class="sub">点帖内榜单卡片直达榜单页并定位对应视频（高亮 2 秒）。</span>
+          <span class="sub">帖子本身不内嵌榜单数据与评论，榜单侧体验不被社区稀释。</span></div>
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg></div>
-        <div class="t"><b>评论自闭环</b>：点帖拉起帖子自己的评论流，与榜单评论流独立、两侧不同步；帖子赞数为帖赞，与视频点赞数各算各的。</div>
+        <div class="t"><b>评论自闭环</b>
+          <span class="sub">点帖拉起帖子自己的评论流，与榜单评论流独立、两侧不同步。</span>
+          <span class="sub">帖子赞数为帖赞，与视频点赞数各算各的。</span></div>
       </div>
       <div class="cap">点赞有后果 / 通知回访 / 榜卡回流两版相同，差异仅在社区有无原生回合卡与评论是否同源</div>
     </div>
@@ -707,8 +736,8 @@ body.shot.cards .side{display:flex;}
     <div class="card">
       <h3>与打通方案两版的边界</h3>
       <div class="ab">
-        <div class="v va"><b>版本 A · Strava 化</b>回合卡原生动进球筐，评论流同源，一条评论榜单/社区两个窗口都可见。</div>
-        <div class="v vb"><b>版本 B · 虎扑化</b>无回合卡，真人帖＋榜卡＋运营战报承载，评论流两侧各自闭环。</div>
+        <div class="v va"><b>版本 A · Strava 化</b><span class="sub">回合卡原生动进球筐，评论流同源，一条评论榜单/社区两个窗口都可见。</span></div>
+        <div class="v vb"><b>版本 B · 虎扑化</b><span class="sub">无回合卡，真人帖＋榜卡＋运营战报承载，评论流两侧各自闭环。</span></div>
       </div>
       <div class="cap">左侧"方案 A / 方案 B"开关即切两种社区窗口；数据归属由后端 {comment_scope} 决定</div>
     </div>
