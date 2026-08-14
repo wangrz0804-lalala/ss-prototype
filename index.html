@@ -16,6 +16,9 @@ body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;backgr
 header{max-width:1080px;margin:0 auto 18px;}
 header h1{font-size:20px;}
 header p{font-size:13px;color:var(--ink2);margin-top:6px;}
+header .intro{margin-top:10px;font-size:12.5px;color:var(--ink2);line-height:1.75;}
+header .blk{margin-top:8px;}
+header .blk b{color:var(--accent);font-size:13px;}
 .main{max-width:1080px;margin:0 auto;display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;}
 .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;}
 .cap{color:var(--ink3);font-size:12px;margin-top:10px;text-align:center;}
@@ -254,7 +257,26 @@ body.shot.cards .side{display:flex;}
 <body>
 <header>
   <h1>社区×排行榜打通 · 评论功能 · 交互原型</h1>
-  <p>配合《SmartShot 社区×排行榜打通 · 评论功能 PRD》使用。左侧切"榜单侧 / 社区侧"与"访客 / 作者视角"：榜单侧点卡进视频页、右轨半屏发评论；社区侧回合卡进共享详情页、在榜 chip 回跳定位；作者视角可编辑正文、删除自己的帖子。社区侧还可切"方案 A · Strava 化 / 方案 B · 虎扑化"两种社区窗口。右轨"分享"弹选择半屏：分享到球筐（本期新增 · 置顶）走授权 + 文案编辑后发布，分享给微信好友维持现行卡片分享；分享授权与自动发帖授权两条分离，见球筐 ⚙ 设置。</p>
+  <p>配合《SmartShot 社区×排行榜打通 · 评论功能 PRD》使用，手机框与右侧说明卡并排，按下面步骤走一遍即可覆盖本期全部改造点。</p>
+  <div class="intro">
+    <div class="blk"><b>本期改造点</b><br>
+      ① 三处加评论入口（右轨按钮／视频卡 chip／荣誉榜记录条），同一条评论流，计数跨榜聚合，版本 A 球筐回合卡同源；<br>
+      ② 评论半屏：热评置顶、作者标识、500 字内，发送成功四处计数 +1，网络异常重试不丢字；<br>
+      ③ 通知闭环：被评论／被回复／被点赞发通知，点通知回评论区高亮 2 秒；详情页在榜 chip 回跳榜单定位高亮 2 秒；<br>
+      ④ 分享选择半屏："分享到球筐"本期新增·置顶，仅本人回合可走通、他人回合 toast 拦截，微信分享维持现行；<br>
+      ⑤ 两条授权分离：分享授权一次性明示同意，自动发帖设置开关默认关，各自独立；<br>
+      ⑥ 作者管理：⋯ 编辑正文／删除帖子（删除只影响社区侧），作者长按他人评论出删除、自己评论出删除、普通用户长按他人出举报；<br>
+      ⑦ 社区侧：版本 A 回合卡同源窗口，版本 B 帖子自己的评论流与榜单独立。
+    </div>
+    <div class="blk"><b>演示步骤</b><br>
+      1. 榜单侧点卡进视频页，依次体验右轨评论按钮、榜单视频卡 chip、荣誉榜入口；发一条评论，看半屏标题／右轨／视频卡／荣誉榜四处计数 +1 一致；<br>
+      2. 长按评论：访客视角出举报；切作者视角，在自己回合下长按他人评论出删除；<br>
+      3. 作者视角右轨"分享"→分享到球筐→授权半屏（再想想／同意并继续）→发布编辑（文案预填、#超球速竞技 锁定、场馆不可改）→发布，去社区侧看球筐 feed 的回合卡；<br>
+      4. 访客视角点"分享到球筐"体验 toast 拦截；"分享给微信好友"走现行链路；<br>
+      5. 社区侧点回合卡进共享详情页，点在榜 chip 回跳榜单定位高亮；切方案 A／方案 B 对照两种社区窗口；<br>
+      6. 球筐 ⚙ 看分享与发帖两条开关（独立、默认关）；作者视角 ⋯ 体验编辑正文／删除帖子。
+    </div>
+  </div>
 </header>
 <div class="main">
 
