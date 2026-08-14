@@ -166,6 +166,10 @@ header p{font-size:13px;color:var(--ink2);margin-top:6px;}
 .share-cancel{margin:10px 12px 4px;text-align:center;padding:11px;background:#f0f2f6;border-radius:12px;font-size:13px;color:var(--ink2);cursor:pointer;}
 .menu-cancel{margin:4px 12px 0;text-align:center;padding:12px;border-top:1px solid var(--line);font-size:13px;color:var(--ink3);cursor:pointer;}
 .editsheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:16px 16px 0 0;z-index:6;box-shadow:0 -8px 24px rgba(28,35,48,.18);display:flex;flex-direction:column;padding:14px;}
+.pubtags{display:flex;gap:6px;align-items:center;margin:8px 0 0;flex-wrap:wrap;}
+.pubtag{font-size:10.5px;color:var(--accent);background:#eef3ff;border-radius:8px;padding:3px 8px;}
+.pubtag.lock{color:var(--ink2);background:#f0f2f6;}
+.pubaddr{font-size:10.5px;color:var(--ink3);margin-top:6px;}
 .edit-head{display:flex;justify-content:space-between;align-items:center;font-size:13px;}
 .edit-head .cancel{color:var(--ink3);cursor:pointer;}
 .edit-head b{font-size:14px;}
@@ -463,7 +467,7 @@ body.shot.cards .side{display:flex;}
         <div class="shareopts">
           <div class="shareopt primary" onclick="chooseBasket()">
             <div class="ic" style="background:var(--accent)">筐</div>
-            <div class="tx"><b>分享到球筐</b><span>回合发布到社区，收集点赞与评论</span></div>
+            <div class="tx"><b>分享到球筐</b><span>回合发布到社区，收集点赞评论 · 可得经验（同一内容不重复）</span></div>
             <span class="ptag">本期新增</span>
           </div>
           <div class="shareopt" onclick="chooseWechat()">
@@ -488,7 +492,9 @@ body.shot.cards .side{display:flex;}
       <div class="editsheet hidden" id="pubSheet">
         <div class="edit-head"><span class="cancel" onclick="closePub()">取消</span><b id="pubTitle">分享回合到球筐</b><span class="save" onclick="doPub()">发布</span></div>
         <textarea id="pubTa" maxlength="500">168 km/h 的发球炸了！球速榜第 1 名，求点赞</textarea>
-        <div class="edit-hint">文案由系统按回合数据预填、可任意编辑，上限 {N} 字；发布后可在帖子右上角 ⋯ 再次编辑或删除。</div>
+        <div class="pubtags"><span class="pubtag lock">#超球速竞技 · 不可去除</span><span class="pubtag">#网球生活日记</span></div>
+        <div class="pubaddr">位置：东方体育中心 · 自动使用场馆地址，不可修改</div>
+        <div class="edit-hint">文案由系统按回合数据预填（球速超 100km/h 提示分享球速、有制胜分提示精彩球），可任意编辑；500 字内、最多 10 个话题，复用球筐内容编辑页现行口径。</div>
       </div>
 
       <!-- 分享与发帖设置：两条授权分离，各自独立开关 -->
@@ -639,6 +645,10 @@ body.shot.cards .side{display:flex;}
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M14 5l7 7-7 7v-4H3v-6h11V5z"/></svg></div>
         <div class="t"><b>榜单 → 球筐（本期新增 · 最高优先级）</b>：右轨"分享"弹选择半屏，两个去向——"分享到球筐"置顶，走授权 → 文案编辑 → 发布；"分享给微信好友"为现行卡片/图片分享，链路不改。仅本人回合可分享到球筐，他人视频点该选项 toast 拦截。版本 B 时社区不显示榜单评论数。</div>
+      </div>
+      <div class="row">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 6h16v10H4z"/></svg></div>
+        <div class="t"><b>复用球筐现行设计</b>：微信分享页加"分享到球筐"勾选（未进球筐才展示、带可得经验，微信分享完成直跳编辑页，已进球筐不展示）；经验同一内容不重复；编辑页 500 字内、最多 10 话题，榜单内容默认带对应榜话题（如 #超球速竞技）不可去除，地址自动场馆不可改；提示逻辑复用（球速超 100km/h 提示分享球速、制胜分提示精彩球）；点创建集锦则分享入口隐藏。</div>
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-3.3 0-7 1.7-7 4v2h14v-2c0-2.3-3.7-4-7-4z"/></svg></div>
