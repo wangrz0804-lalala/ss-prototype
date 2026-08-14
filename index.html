@@ -431,6 +431,12 @@ body.shot.cards .side{display:flex;}
         <div class="txt">删除后回合卡从球筐 feed 移除，社区侧不再展示其评论；你在榜单上的名次与数据不受影响。</div>
         <div class="btns"><span class="b-cancel" onclick="closeDel()">取消</span><span class="b-del" onclick="doDel()">删除</span></div>
       </div>
+      <!-- 评论长按操作菜单：他人评论出举报（P0），自己评论出删除（P1） -->
+      <div class="menusheet hidden" id="cmtMenu">
+        <div class="menu-item danger hidden" id="cmtDel" onclick="doCmtDel()">删除</div>
+        <div class="menu-item hidden" id="cmtReport" onclick="doCmtReport()">举报</div>
+        <div class="menu-cancel" onclick="closeCmtMenu()">取消</div>
+      </div>
       <div class="authsheet hidden" id="authSheet">
         <b id="authTitle">分享回合到球筐</b>
         <div class="auth-list">
@@ -444,7 +450,7 @@ body.shot.cards .side{display:flex;}
 
       <!-- 帖子评论半屏（版本 B：帖子自己的评论流，与榜单评论流独立不同步） -->
       <div class="sheet hidden" id="postSheet">
-        <div class="sheet-head">帖子评论 <span>8</span><span class="tip">与榜单评论流独立 · 两侧不同步</span></div>
+        <div class="sheet-head">帖子评论 <span>8</span><span class="tip">与榜单评论流独立 · 长按可举报/删除</span></div>
         <div class="clist">
           <div class="citem">
             <div class="ava">网</div>
@@ -454,6 +460,15 @@ body.shot.cards .side{display:flex;}
               <div class="tm">7-6 18:20</div>
             </div>
             <div class="like" onclick="toggleCLike(this,5)"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg><span>5</span></div>
+          </div>
+          <div class="citem" data-mine="author">
+            <div class="ava">李</div>
+            <div class="body">
+              <div class="nm">李日日<span class="badge-master">楼主</span></div>
+              <div class="txt">谢谢大家点赞，继续练！</div>
+              <div class="tm">7-7 10:02</div>
+            </div>
+            <div class="like" onclick="toggleCLike(this,1)"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg><span>1</span></div>
           </div>
           <div class="citem">
             <div class="ava">穿</div>
@@ -473,7 +488,7 @@ body.shot.cards .side{display:flex;}
 
       <!-- 评论半屏（手机级浮层，视频页/荣誉榜均可拉起） -->
         <div class="sheet hidden" id="sheet">
-          <div class="sheet-head">评论 <span id="sheetCnt">12</span><span class="tip">热评置顶 · 其余按时间倒序</span></div>
+          <div class="sheet-head">评论 <span id="sheetCnt">12</span><span class="tip">热评置顶 · 长按可举报/删除</span></div>
           <div class="clist" id="clist">
             <div class="citem">
               <div class="ava">网</div>
@@ -484,7 +499,7 @@ body.shot.cards .side{display:flex;}
               </div>
               <div class="like" onclick="toggleCLike(this,86)"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg><span>86</span></div>
             </div>
-            <div class="citem">
+            <div class="citem" data-mine="author">
               <div class="ava">李</div>
               <div class="body">
                 <div class="nm">李日日<span class="badge-master">作者</span></div>
@@ -527,6 +542,10 @@ body.shot.cards .side{display:flex;}
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M6 3h12l2 5H4l2-5zm-2 7h16v11H4V10z"/></svg></div>
         <div class="t"><b>荣誉榜记录条评论</b>（用户视角）：点赞按钮旁加评论按钮与计数，用户日常扫到自己回合下的讨论。</div>
+      </div>
+      <div class="row">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v3h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1V7a5 5 0 0 1 5-5zm3 8V7a3 3 0 0 0-6 0v3h6z"/></svg></div>
+        <div class="t"><b>评论管理（长按）</b>：长按他人评论出"举报"（P0），复用社区现有举报入口与人工审核队列，toast"举报已受理"；长按自己评论出"删除"（P1），半屏/右轨/视频卡/荣誉榜四处计数同步 -1。帖子评论流同规则、与榜单侧互不影响。</div>
       </div>
       <div class="cap">入口清单 · 计数跨风云/球速/击球数榜聚合</div>
     </div>
@@ -604,9 +623,10 @@ body.shot.cards .side{display:flex;}
 
 <script>
 var cmtCount = 12, liked = false, likeCount = 2000, curCard = null, role = 'guest', authorized = false, plan = 'a';
+var curCmt = null, suppressClick = false, lpTimer = null;
 function hideAllScrs(){
   ['scr-list','scr-video','scr-honor','scr-community','scr-community-b'].forEach(function(id){ document.getElementById(id).classList.add('hidden'); });
-  ['sheet','menuSheet','editSheet','delConfirm','authSheet','postSheet'].forEach(function(id){ document.getElementById(id).classList.add('hidden'); });
+  ['sheet','menuSheet','editSheet','delConfirm','authSheet','postSheet','cmtMenu'].forEach(function(id){ document.getElementById(id).classList.add('hidden'); });
   document.getElementById('planSw').classList.add('hidden');
 }
 function goVideo(card){
@@ -715,7 +735,7 @@ function sendCmt(){
   if(!v){ toast('先写点什么吧'); return; }
   var empty = document.querySelector('#clist div[style]');
   if(empty && empty.textContent.indexOf('抢沙发')>=0){ document.getElementById('clist').innerHTML=''; }
-  var html = '<div class="citem"><div class="ava">我</div><div class="body"><div class="nm">我</div><div class="txt"></div><div class="tm">刚刚</div></div><div class="like" onclick="toggleCLike(this,0)"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg><span>0</span></div></div>';
+  var html = '<div class="citem" data-mine="self"><div class="ava">我</div><div class="body"><div class="nm">我</div><div class="txt"></div><div class="tm">刚刚</div></div><div class="like" onclick="toggleCLike(this,0)"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg><span>0</span></div></div>';
   var list = document.getElementById('clist');
   list.insertAdjacentHTML('afterbegin', html);
   list.firstChild.querySelector('.txt').textContent = v;
@@ -728,7 +748,63 @@ function toast(msg){
   t.textContent = msg; t.classList.remove('hidden');
   setTimeout(function(){ t.classList.add('hidden'); }, 1500);
 }
-/* 截图模式：?shot=list/video/sheet/empty/honor/community/cards/author/authorvideo/menu/edit/delconfirm/auth/pubauth/planb/postsheet */
+/* 长按评论：他人评论出举报（P0），自己评论出删除（P1） */
+function cmtIsMine(el){
+  var m = el.getAttribute('data-mine');
+  if(m === 'self') return true;
+  if(m === 'author') return role === 'author';
+  return false;
+}
+function lpStart(el){
+  lpCancel();
+  lpTimer = setTimeout(function(){ lpTimer = null; suppressClick = true; openCmtMenu(el); }, 500);
+}
+function lpCancel(){ if(lpTimer){ clearTimeout(lpTimer); lpTimer = null; } }
+document.addEventListener('mousedown', function(e){
+  var it = e.target.closest ? e.target.closest('.citem') : null;
+  if(it && it.closest('.clist')) lpStart(it);
+});
+document.addEventListener('mouseup', lpCancel);
+document.addEventListener('touchstart', function(e){
+  var it = e.target.closest ? e.target.closest('.citem') : null;
+  if(it && it.closest('.clist')) lpStart(it);
+}, {passive:true});
+document.addEventListener('touchend', lpCancel);
+document.addEventListener('touchmove', lpCancel);
+document.addEventListener('click', function(e){
+  if(suppressClick){ suppressClick = false; e.stopPropagation(); e.preventDefault(); }
+}, true);
+function openCmtMenu(el){
+  curCmt = el;
+  var mine = cmtIsMine(el);
+  document.getElementById('cmtDel').classList.toggle('hidden', !mine);
+  document.getElementById('cmtReport').classList.toggle('hidden', mine);
+  document.getElementById('cmtMenu').classList.remove('hidden');
+}
+function closeCmtMenu(){ document.getElementById('cmtMenu').classList.add('hidden'); }
+function doCmtReport(){
+  closeCmtMenu();
+  toast('举报已受理');
+}
+function doCmtDel(){
+  closeCmtMenu();
+  var el = curCmt; if(!el) return;
+  var inMain = !!el.closest('#clist');
+  el.parentNode.removeChild(el);
+  curCmt = null;
+  if(inMain){
+    cmtCount = Math.max(0, cmtCount - 1);
+    syncCount();
+    if(cmtCount === 0){ document.getElementById('clist').innerHTML = '<div style="text-align:center;color:#8b95a5;font-size:12px;padding:40px 0">还没有评论，来抢沙发</div>'; }
+    toast('评论已删除');
+  } else {
+    var h = document.querySelector('#postSheet .sheet-head span');
+    var n = Math.max(0, (parseInt(h.textContent,10) || 0) - 1);
+    h.textContent = n;
+    toast('评论已删除（帖子评论流）');
+  }
+}
+/* 截图模式：?shot=list/video/sheet/empty/honor/community/cards/author/authorvideo/menu/edit/delconfirm/auth/pubauth/planb/postsheet/cmtmenu */
 (function(){
   var s = new URLSearchParams(location.search).get('shot');
   if(!s) return;
@@ -737,6 +813,7 @@ function toast(msg){
   var cards = document.querySelectorAll('.vcard');
   if(s === 'video'){ goVideo(cards[0]); }
   else if(s === 'sheet'){ goVideo(cards[0]); openSheet(); }
+  else if(s === 'cmtmenu'){ goVideo(cards[0]); openSheet(); openCmtMenu(document.querySelector('#clist .citem')); }
   else if(s === 'empty'){ goVideo(cards[2]); openSheet(); }
   else if(s === 'honor'){ goHonor(); }
   else if(s === 'community'){ goCommunity(); }
