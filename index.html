@@ -153,6 +153,17 @@ header p{font-size:13px;color:var(--ink2);margin-top:6px;}
 .menusheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:16px 16px 0 0;z-index:6;box-shadow:0 -8px 24px rgba(28,35,48,.18);padding:6px 0 10px;}
 .menu-item{padding:13px 20px;font-size:13px;cursor:pointer;}
 .menu-item.danger{color:#d64545;}
+.share-ttl{font-size:13px;color:var(--ink3);text-align:center;padding:8px 0 2px;}
+.shareopts{display:flex;flex-direction:column;gap:8px;padding:10px 12px 2px;}
+.shareopt{display:flex;align-items:center;gap:10px;border:1px solid #e7eaf0;border-radius:12px;padding:11px 13px;cursor:pointer;}
+.shareopt.primary{border-color:var(--accent);background:#f3f7ff;}
+.shareopt .ic{flex:0 0 34px;width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:600;}
+.shareopt .ic svg{width:20px;height:20px;fill:#fff;}
+.shareopt .tx{flex:1;}
+.shareopt .tx b{font-size:13px;display:block;}
+.shareopt .tx span{font-size:10.5px;color:var(--ink3);}
+.shareopt .ptag{font-size:10px;color:var(--accent);border:1px solid var(--accent);border-radius:8px;padding:1px 6px;flex:0 0 auto;}
+.share-cancel{margin:10px 12px 4px;text-align:center;padding:11px;background:#f0f2f6;border-radius:12px;font-size:13px;color:var(--ink2);cursor:pointer;}
 .menu-cancel{margin:4px 12px 0;text-align:center;padding:12px;border-top:1px solid var(--line);font-size:13px;color:var(--ink3);cursor:pointer;}
 .editsheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:16px 16px 0 0;z-index:6;box-shadow:0 -8px 24px rgba(28,35,48,.18);display:flex;flex-direction:column;padding:14px;}
 .edit-head{display:flex;justify-content:space-between;align-items:center;font-size:13px;}
@@ -239,7 +250,7 @@ body.shot.cards .side{display:flex;}
 <body>
 <header>
   <h1>社区×排行榜打通 · 评论功能 · 交互原型</h1>
-  <p>配合《SmartShot 社区×排行榜打通 · 评论功能 PRD》使用。左侧切"榜单侧 / 社区侧"与"访客 / 作者视角"：榜单侧点卡进视频页、右轨半屏发评论；社区侧回合卡进共享详情页、在榜 chip 回跳定位；作者视角可编辑正文、删除自己的帖子。社区侧还可切"方案 A · Strava 化 / 方案 B · 虎扑化"两种社区窗口。分享先过授权、再编辑文案后发布；分享授权与自动发帖授权两条分离，见球筐 ⚙ 设置。</p>
+  <p>配合《SmartShot 社区×排行榜打通 · 评论功能 PRD》使用。左侧切"榜单侧 / 社区侧"与"访客 / 作者视角"：榜单侧点卡进视频页、右轨半屏发评论；社区侧回合卡进共享详情页、在榜 chip 回跳定位；作者视角可编辑正文、删除自己的帖子。社区侧还可切"方案 A · Strava 化 / 方案 B · 虎扑化"两种社区窗口。右轨"分享"弹选择半屏：分享到球筐（本期新增 · 置顶）走授权 + 文案编辑后发布，分享给微信好友维持现行卡片分享；分享授权与自动发帖授权两条分离，见球筐 ⚙ 设置。</p>
 </header>
 <div class="main">
 
@@ -295,7 +306,7 @@ body.shot.cards .side{display:flex;}
               <svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>
               <span id="cmtCnt">12</span>
             </div>
-            <div class="rail-btn" onclick="shareToBasket()">
+            <div class="rail-btn" onclick="openSharePanel()">
               <svg viewBox="0 0 24 24"><path d="M14 5l7 7-7 7v-4H3v-6h11V5z"/></svg>
               <span>分享</span>
             </div>
@@ -445,6 +456,22 @@ body.shot.cards .side{display:flex;}
         <div class="menu-item danger hidden" id="cmtDel" onclick="doCmtDel()">删除</div>
         <div class="menu-item hidden" id="cmtReport" onclick="doCmtReport()">举报</div>
         <div class="menu-cancel" onclick="closeCmtMenu()">取消</div>
+      </div>
+      <!-- 分享选择半屏：新增"分享到球筐"置顶（本期最高优先级），微信分享为现行能力 -->
+      <div class="menusheet hidden" id="shareSheet">
+        <div class="share-ttl">分享到</div>
+        <div class="shareopts">
+          <div class="shareopt primary" onclick="chooseBasket()">
+            <div class="ic" style="background:var(--accent)">筐</div>
+            <div class="tx"><b>分享到球筐</b><span>回合发布到社区，收集点赞与评论</span></div>
+            <span class="ptag">本期新增</span>
+          </div>
+          <div class="shareopt" onclick="chooseWechat()">
+            <div class="ic" style="background:#07c160"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg></div>
+            <div class="tx"><b>分享给微信好友</b><span>生成分享卡片，发送到微信聊天（现行能力）</span></div>
+          </div>
+        </div>
+        <div class="share-cancel" onclick="closeSharePanel()">取消</div>
       </div>
       <div class="authsheet hidden" id="authSheet">
         <b id="authTitle">分享回合到球筐</b>
@@ -611,7 +638,7 @@ body.shot.cards .side{display:flex;}
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M14 5l7 7-7 7v-4H3v-6h11V5z"/></svg></div>
-        <div class="t"><b>榜单 → 球筐</b>：维持现行手动分享链（分享弹层"分享到球筐"、报告页入口），本 PRD 不改；版本 B 时社区不显示榜单评论数。</div>
+        <div class="t"><b>榜单 → 球筐（本期新增 · 最高优先级）</b>：右轨"分享"弹选择半屏，两个去向——"分享到球筐"置顶，走授权 → 文案编辑 → 发布；"分享给微信好友"为现行卡片/图片分享，链路不改。仅本人回合可分享到球筐，他人视频点该选项 toast 拦截。版本 B 时社区不显示榜单评论数。</div>
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-3.3 0-7 1.7-7 4v2h14v-2c0-2.3-3.7-4-7-4z"/></svg></div>
@@ -619,7 +646,7 @@ body.shot.cards .side{display:flex;}
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v3h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1V7a5 5 0 0 1 5-5zm3 8V7a3 3 0 0 0-6 0v3h6z"/></svg></div>
-        <div class="t"><b>分享授权（一次性明示）</b>：首次点右轨分享或球筐 + 弹授权半屏，同意后进入文案编辑半屏、确认文案才发布；右轨分享与球筐发帖两条手动入口共享同一授权。</div>
+        <div class="t"><b>分享授权（一次性明示）</b>：首次在分享半屏点"分享到球筐"、或球筐 + 发帖时弹授权半屏，同意后进入文案编辑半屏、确认文案才发布；两条手动入口共享同一授权。</div>
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 6h16v10H4z"/></svg></div>
@@ -662,7 +689,7 @@ var curCmt = null, suppressClick = false, lpTimer = null;
 var pendingPub = 'share';
 function hideAllScrs(){
   ['scr-list','scr-video','scr-honor','scr-community','scr-community-b'].forEach(function(id){ document.getElementById(id).classList.add('hidden'); });
-  ['sheet','menuSheet','editSheet','delConfirm','authSheet','postSheet','cmtMenu','pubSheet','settingsSheet'].forEach(function(id){ document.getElementById(id).classList.add('hidden'); });
+  ['sheet','menuSheet','editSheet','delConfirm','authSheet','postSheet','cmtMenu','pubSheet','settingsSheet','shareSheet'].forEach(function(id){ document.getElementById(id).classList.add('hidden'); });
   document.getElementById('planSw').classList.add('hidden');
 }
 function goVideo(card){
@@ -706,6 +733,16 @@ function doDel(){
   if(card){ card.style.display = 'none'; }
   toast('帖子已删除，榜单不受影响');
   goCommunity();
+}
+function openSharePanel(){ document.getElementById('shareSheet').classList.remove('hidden'); }
+function closeSharePanel(){ document.getElementById('shareSheet').classList.add('hidden'); }
+function chooseBasket(){
+  closeSharePanel();
+  shareToBasket();
+}
+function chooseWechat(){
+  closeSharePanel();
+  toast('分享卡片已生成，正在唤起微信（示意）');
 }
 function shareToBasket(){
   if(!(role === 'author' && isOwnVideo())){ toast('仅视频拥有人可分享到球筐'); return; }
@@ -871,7 +908,7 @@ function doCmtDel(){
     toast('评论已删除（帖子评论流）');
   }
 }
-/* 截图模式：?shot=list/video/sheet/empty/honor/community/cards/author/authorvideo/menu/edit/delconfirm/auth/pubauth/pubedit/settings/planb/postsheet/cmtmenu */
+/* 截图模式：?shot=list/video/sheet/empty/honor/community/cards/author/authorvideo/menu/edit/delconfirm/sharepanel/auth/pubauth/pubedit/settings/planb/postsheet/cmtmenu */
 (function(){
   var s = new URLSearchParams(location.search).get('shot');
   if(!s) return;
@@ -889,6 +926,7 @@ function doCmtDel(){
   else if(s === 'menu'){ setRole('author'); goVideo(cards[0]); openMenu(); }
   else if(s === 'edit'){ setRole('author'); goVideo(cards[0]); openEdit(); }
   else if(s === 'delconfirm'){ setRole('author'); goVideo(cards[0]); askDel(); }
+  else if(s === 'sharepanel'){ setRole('author'); goVideo(cards[0]); openSharePanel(); }
   else if(s === 'auth'){ setRole('author'); goVideo(cards[0]); shareToBasket(); }
   else if(s === 'pubauth'){ setRole('author'); goCommunity(); pubRound(); }
   else if(s === 'pubedit'){ setRole('author'); goVideo(cards[0]); authorized = true; openPub('分享回合到球筐'); }
