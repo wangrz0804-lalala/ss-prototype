@@ -180,6 +180,15 @@ header p{font-size:13px;color:var(--ink2);margin-top:6px;}
 .auth-ok{background:var(--accent);color:#fff;}
 .auth-no{background:#f0f2f6;color:var(--ink2);}
 .auth-tip{font-size:10.5px;color:var(--ink3);text-align:center;margin-top:10px;}
+.setrow{display:flex;gap:10px;align-items:center;padding:11px 0;border-top:1px dashed var(--line);margin-top:10px;}
+.setrow:first-of-type{border-top:none;margin-top:2px;}
+.set-t{flex:1;font-size:12.5px;color:var(--ink);line-height:1.5;}
+.set-d{font-size:10.5px;color:var(--ink3);margin-top:3px;line-height:1.5;font-weight:400;}
+.tgl{flex:0 0 40px;width:40px;height:22px;border-radius:11px;background:#cfd5de;position:relative;cursor:pointer;}
+.tgl::after{content:"";position:absolute;left:2px;top:2px;width:18px;height:18px;border-radius:50%;background:#fff;}
+.tgl.on{background:var(--good);}
+.tgl.on::after{left:20px;}
+.chead .gear{width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--ink2);cursor:pointer;margin-right:8px;}
 
 /* 社区 · 球筐 */
 .chead{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);}
@@ -230,7 +239,7 @@ body.shot.cards .side{display:flex;}
 <body>
 <header>
   <h1>社区×排行榜打通 · 评论功能 · 交互原型</h1>
-  <p>配合《SmartShot 社区×排行榜打通 · 评论功能 PRD》使用。左侧切"榜单侧 / 社区侧"与"访客 / 作者视角"：榜单侧点卡进视频页、右轨半屏发评论；社区侧回合卡进共享详情页、在榜 chip 回跳定位；作者视角可编辑正文、删除自己的帖子。社区侧还可切"方案 A · Strava 化 / 方案 B · 虎扑化"两种社区窗口。</p>
+  <p>配合《SmartShot 社区×排行榜打通 · 评论功能 PRD》使用。左侧切"榜单侧 / 社区侧"与"访客 / 作者视角"：榜单侧点卡进视频页、右轨半屏发评论；社区侧回合卡进共享详情页、在榜 chip 回跳定位；作者视角可编辑正文、删除自己的帖子。社区侧还可切"方案 A · Strava 化 / 方案 B · 虎扑化"两种社区窗口。分享先过授权、再编辑文案后发布；分享授权与自动发帖授权两条分离，见球筐 ⚙ 设置。</p>
 </header>
 <div class="main">
 
@@ -335,7 +344,7 @@ body.shot.cards .side{display:flex;}
 
       <!-- 社区 · 球筐（打通方案版本 A 窗口） -->
       <div class="scr hidden" id="scr-community">
-        <div class="chead"><span class="ttl">球筐</span><span class="pub" onclick="pubRound()">+</span></div>
+        <div class="chead"><span class="ttl">球筐</span><span style="display:flex;align-items:center"><span class="gear" onclick="openSettings()">⚙</span><span class="pub" onclick="pubRound()">+</span></span></div>
         <div class="ctabs"><span class="on">推荐</span><span>最新</span></div>
         <div class="topics"><span class="topic">#网球生活日记</span><span class="topic">#界内之王</span><span class="topic">#我的网球瞬间</span></div>
         <div class="wfall">
@@ -375,7 +384,7 @@ body.shot.cards .side{display:flex;}
 
       <!-- 社区 · 球筐（打通方案版本 B 窗口 · 虎扑化） -->
       <div class="scr hidden" id="scr-community-b">
-        <div class="chead"><span class="ttl">球筐</span><span class="pub" onclick="pubRound()">+</span></div>
+        <div class="chead"><span class="ttl">球筐</span><span style="display:flex;align-items:center"><span class="gear" onclick="openSettings()">⚙</span><span class="pub" onclick="pubRound()">+</span></span></div>
         <div class="ctabs"><span class="on">推荐</span><span>最新</span></div>
         <div class="topics"><span class="topic">#本周TOP10回合</span><span class="topic">#网球生活日记</span><span class="topic">#界内之王</span></div>
         <div class="wfall">
@@ -442,10 +451,32 @@ body.shot.cards .side{display:flex;}
         <div class="auth-list">
           <div class="auth-item"><span class="dot"></span>将以你的账号发布到球筐，昵称跟随社区展示口径，头像为默认兜底头像。</div>
           <div class="auth-item"><span class="dot"></span>发布后他人可见、可评论、可点赞；你可随时编辑正文或删除帖子。</div>
-          <div class="auth-item"><span class="dot"></span>可在 我的-设置 关闭"允许我的回合进入球筐"，关闭后存量回合卡下架，榜单不受影响。</div>
+          <div class="auth-item"><span class="dot"></span>同意后进入文案编辑，确认文案点"发布"才真正发出。</div>
         </div>
-        <div class="auth-btns"><span class="auth-no" onclick="closeAuth()">再想想</span><span class="auth-ok" onclick="agreeAuth()">同意并发布</span></div>
-        <div class="auth-tip">首次分享或发帖需明示同意 · 仅自己的回合可进入球筐</div>
+        <div class="auth-btns"><span class="auth-no" onclick="closeAuth()">再想想</span><span class="auth-ok" onclick="agreeAuth()">同意并继续</span></div>
+        <div class="auth-tip">分享授权为一次性明示 · 自动发帖需在设置单独开启，两条授权相互独立</div>
+      </div>
+
+      <!-- 发布编辑半屏：预填建议文案，可编辑，确认后才发布 -->
+      <div class="editsheet hidden" id="pubSheet">
+        <div class="edit-head"><span class="cancel" onclick="closePub()">取消</span><b id="pubTitle">分享回合到球筐</b><span class="save" onclick="doPub()">发布</span></div>
+        <textarea id="pubTa" maxlength="500">168 km/h 的发球炸了！球速榜第 1 名，求点赞</textarea>
+        <div class="edit-hint">文案由系统按回合数据预填、可任意编辑，上限 {N} 字；发布后可在帖子右上角 ⋯ 再次编辑或删除。</div>
+      </div>
+
+      <!-- 分享与发帖设置：两条授权分离，各自独立开关 -->
+      <div class="authsheet hidden" id="settingsSheet">
+        <b>分享与发帖设置</b>
+        <div class="setrow">
+          <div class="set-t">允许手动分享我的回合到球筐<div class="set-d">首次分享需明示同意；关闭不影响已发布帖子（可单独删除），再点分享将重新弹授权</div></div>
+          <span class="tgl on" id="tglShare" onclick="tglShareFn()"></span>
+        </div>
+        <div class="setrow">
+          <div class="set-t">允许我的回合自动发帖到球筐<div class="set-d">默认关；开启后新回合自动生成帖子（系统默认文案、无编辑环节）；关闭将批量下架自动发帖，手动分享的不受影响</div></div>
+          <span class="tgl" id="tglAuto" onclick="tglAutoFn()"></span>
+        </div>
+        <div class="auth-tip">两条授权各自独立 · 关闭任一均不影响榜单名次与数据</div>
+        <div class="menu-cancel" onclick="closeSettings()">完成</div>
       </div>
 
       <!-- 帖子评论半屏（版本 B：帖子自己的评论流，与榜单评论流独立不同步） -->
@@ -588,7 +619,11 @@ body.shot.cards .side{display:flex;}
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v3h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1V7a5 5 0 0 1 5-5zm3 8V7a3 3 0 0 0-6 0v3h6z"/></svg></div>
-        <div class="t"><b>分享授权</b>：首次分享需明示同意（以本人账号发布、可随时编辑删除）；我的-设置可关"允许我的回合进入球筐"，关后存量卡下架、榜单不受影响。</div>
+        <div class="t"><b>分享授权（一次性明示）</b>：首次点右轨分享或球筐 + 弹授权半屏，同意后进入文案编辑半屏、确认文案才发布；右轨分享与球筐发帖两条手动入口共享同一授权。</div>
+      </div>
+      <div class="row">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 6h16v10H4z"/></svg></div>
+        <div class="t"><b>自动发帖授权（设置开关）</b>：我的-设置默认关；开启后新回合自动发帖（系统默认文案、无编辑环节），关闭将批量下架自动发帖、手动分享的不受影响。两条授权相互独立，关闭任一不影响榜单。</div>
       </div>
       <div class="cap">社区侧为球筐现有形态，本 PRD 只定义回合卡的评论同源展示</div>
     </div>
@@ -624,9 +659,10 @@ body.shot.cards .side{display:flex;}
 <script>
 var cmtCount = 12, liked = false, likeCount = 2000, curCard = null, role = 'guest', authorized = false, plan = 'a';
 var curCmt = null, suppressClick = false, lpTimer = null;
+var pendingPub = 'share';
 function hideAllScrs(){
   ['scr-list','scr-video','scr-honor','scr-community','scr-community-b'].forEach(function(id){ document.getElementById(id).classList.add('hidden'); });
-  ['sheet','menuSheet','editSheet','delConfirm','authSheet','postSheet','cmtMenu'].forEach(function(id){ document.getElementById(id).classList.add('hidden'); });
+  ['sheet','menuSheet','editSheet','delConfirm','authSheet','postSheet','cmtMenu','pubSheet','settingsSheet'].forEach(function(id){ document.getElementById(id).classList.add('hidden'); });
   document.getElementById('planSw').classList.add('hidden');
 }
 function goVideo(card){
@@ -673,16 +709,47 @@ function doDel(){
 }
 function shareToBasket(){
   if(!(role === 'author' && isOwnVideo())){ toast('仅视频拥有人可分享到球筐'); return; }
+  pendingPub = 'share';
   if(!authorized){ document.getElementById('authTitle').textContent = '分享回合到球筐'; document.getElementById('authSheet').classList.remove('hidden'); }
-  else { toast('已分享到球筐'); }
+  else { openPub('分享回合到球筐'); }
 }
 function pubRound(){
   if(role !== 'author'){ toast('登录后才能发布'); return; }
+  pendingPub = 'publish';
   if(!authorized){ document.getElementById('authTitle').textContent = '发布回合帖到球筐'; document.getElementById('authSheet').classList.remove('hidden'); }
-  else { toast('已发布，回合帖进入球筐'); }
+  else { openPub('发布回合帖到球筐'); }
 }
 function closeAuth(){ document.getElementById('authSheet').classList.add('hidden'); }
-function agreeAuth(){ authorized = true; closeAuth(); toast('已发布，回合内容进入球筐'); }
+function agreeAuth(){
+  authorized = true;
+  document.getElementById('tglShare').classList.add('on');
+  closeAuth();
+  openPub(pendingPub === 'share' ? '分享回合到球筐' : '发布回合帖到球筐');
+}
+function openPub(title){
+  document.getElementById('pubTitle').textContent = title;
+  document.getElementById('pubSheet').classList.remove('hidden');
+}
+function closePub(){ document.getElementById('pubSheet').classList.add('hidden'); }
+function doPub(){
+  var v = document.getElementById('pubTa').value.trim();
+  if(!v){ toast('文案不能为空'); return; }
+  closePub();
+  toast('已发布，回合内容进入球筐');
+}
+function openSettings(){ document.getElementById('settingsSheet').classList.remove('hidden'); }
+function closeSettings(){ document.getElementById('settingsSheet').classList.add('hidden'); }
+function tglShareFn(){
+  var t = document.getElementById('tglShare');
+  var on = t.classList.toggle('on');
+  authorized = on;
+  toast(on ? '手动分享已开启' : '手动分享已关闭 · 已发布帖子不受影响');
+}
+function tglAutoFn(){
+  var t = document.getElementById('tglAuto');
+  var on = t.classList.toggle('on');
+  toast(on ? '自动发帖已开启 · 新回合将自动发布' : '自动发帖已关闭 · 自动发帖已批量下架');
+}
 function goList(){
   hideAllScrs();
   document.getElementById('scr-list').classList.remove('hidden');
@@ -804,7 +871,7 @@ function doCmtDel(){
     toast('评论已删除（帖子评论流）');
   }
 }
-/* 截图模式：?shot=list/video/sheet/empty/honor/community/cards/author/authorvideo/menu/edit/delconfirm/auth/pubauth/planb/postsheet/cmtmenu */
+/* 截图模式：?shot=list/video/sheet/empty/honor/community/cards/author/authorvideo/menu/edit/delconfirm/auth/pubauth/pubedit/settings/planb/postsheet/cmtmenu */
 (function(){
   var s = new URLSearchParams(location.search).get('shot');
   if(!s) return;
@@ -824,6 +891,8 @@ function doCmtDel(){
   else if(s === 'delconfirm'){ setRole('author'); goVideo(cards[0]); askDel(); }
   else if(s === 'auth'){ setRole('author'); goVideo(cards[0]); shareToBasket(); }
   else if(s === 'pubauth'){ setRole('author'); goCommunity(); pubRound(); }
+  else if(s === 'pubedit'){ setRole('author'); goVideo(cards[0]); authorized = true; openPub('分享回合到球筐'); }
+  else if(s === 'settings'){ goCommunity(); openSettings(); }
   else if(s === 'planb'){ setPlan('b'); goCommunity(); }
   else if(s === 'postsheet'){ setPlan('b'); goCommunity(); openPostSheet(); }
 })();
