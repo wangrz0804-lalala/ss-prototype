@@ -244,6 +244,13 @@ header .blk b{color:var(--accent);font-size:13px;}
 .tabbar .ti svg{width:18px;height:18px;fill:var(--ink3);display:block;margin:0 auto 3px;}
 .tabbar .ti.on{color:var(--accent);font-weight:700;}
 .tabbar .ti.on svg{fill:var(--accent);}
+.minehead{padding:12px 14px;display:flex;gap:10px;align-items:center;border-bottom:1px solid var(--line);}
+.minehead .mava{width:40px;height:40px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;}
+.minehead .mnm{font-size:14px;font-weight:700;}
+.minehead .mid{font-size:10.5px;color:var(--ink3);margin-top:2px;}
+.msec{padding:12px 14px 8px;font-size:13px;font-weight:700;}
+.mwrap{padding:0 12px;display:flex;flex-direction:column;gap:10px;}
+.mnote{padding:10px 14px 0;font-size:10.5px;color:var(--ink3);line-height:1.6;}
 
 /* 截图模式：?shot=list/video/sheet/empty/honor/community/cards */
 body.shot{padding:12px;background:#fff;}
@@ -267,16 +274,16 @@ body.shot.cards .side{display:flex;}
       ③ 通知闭环：被评论／被回复／被点赞发通知，点通知回评论区高亮 2 秒；详情页在榜 chip 回跳榜单定位高亮 2 秒；<br>
       ④ 分享选择半屏："分享到球筐"本期新增·置顶，仅本人回合可走通、他人回合 toast 拦截，微信分享维持现行；<br>
       ⑤ 两条授权分离：分享授权一次性明示同意，自动发帖设置开关默认关，各自独立；<br>
-      ⑥ 作者管理：⋯ 编辑正文／删除帖子（删除只影响社区侧），作者长按他人评论出删除、自己评论出删除、普通用户长按他人出举报；<br>
+      ⑥ 作者管理：自己内容不进自己 feed，我的-我的帖子查看管理；⋯ 编辑正文／删除帖子（删除只影响社区侧）；作者长按他人评论出删除、普通用户长按他人出举报；<br>
       ⑦ 社区侧：版本 A 回合卡同源窗口，版本 B 帖子自己的评论流与榜单独立。
     </div>
     <div class="blk"><b>演示步骤</b><br>
       1. 榜单侧点卡进视频页，依次体验右轨评论按钮、榜单视频卡 chip、荣誉榜入口；发一条评论，看半屏标题／右轨／视频卡／荣誉榜四处计数 +1 一致；<br>
       2. 长按评论：访客视角出举报；切作者视角，在自己回合下长按他人评论出删除；<br>
-      3. 作者视角右轨"分享"→分享到球筐→授权半屏（再想想／同意并继续）→发布编辑（文案预填、#超球速竞技 锁定、场馆不可改）→发布，去社区侧看球筐 feed 的回合卡；<br>
+      3. 作者视角右轨"分享"→分享到球筐→授权半屏（再想想／同意并继续）→发布编辑（文案预填、#超球速竞技 锁定、场馆不可改）→发布；自己 feed 不出现，切访客视角看球筐 feed 的回合卡，作者在我的-我的帖子查看；<br>
       4. 访客视角点"分享到球筐"体验 toast 拦截；"分享给微信好友"走现行链路；<br>
       5. 社区侧点回合卡进共享详情页，点在榜 chip 回跳榜单定位高亮；切方案 A／方案 B 对照两种社区窗口；<br>
-      6. 球筐 ⚙ 看分享与发帖两条开关（独立、默认关）；作者视角 ⋯ 体验编辑正文／删除帖子。
+      6. 球筐 ⚙ 看分享与发帖两条开关（独立、默认关）；作者视角 我的→我的帖子→点卡进详情页 ⋯ 体验编辑正文／删除帖子。
     </div>
   </div>
 </header>
@@ -389,7 +396,7 @@ body.shot.cards .side{display:flex;}
         <div class="wfall">
           <div class="wcol">
             <div class="pcard round" id="myRound" onclick="comCard(0)">
-              <div class="cov g1"><span class="roundtag">回合</span><span class="fromtag">来自球速榜 · 168 km/h</span><span class="mine hidden" id="mineTag">我的帖子</span></div>
+              <div class="cov g1"><span class="roundtag">回合</span><span class="fromtag">来自球速榜 · 168 km/h</span></div>
               <div class="ttl">168 km/h 的发球炸了！这速度能上榜吗</div>
               <div class="meta"><span class="ava">李</span><span class="nm">李日日</span><span class="lkc"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg>2000</span><span class="cmtc"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>12</span></div>
             </div>
@@ -417,7 +424,7 @@ body.shot.cards .side{display:flex;}
           <div class="ti"><svg viewBox="0 0 24 24"><path d="M6 3h12l2 5H4l2-5zm-2 7h16v11H4V10z"/></svg>榜单</div>
           <div class="ti"><svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16zm1 7V8h-2v3H8v2h3v3h2v-3h3v-2h-3z"/></svg>发布</div>
           <div class="ti on"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>社区</div>
-          <div class="ti"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-3.3 0-7 1.7-7 4v2h14v-2c0-2.3-3.7-4-7-4z"/></svg>我的</div>
+          <div class="ti" onclick="goMine()"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-3.3 0-7 1.7-7 4v2h14v-2c0-2.3-3.7-4-7-4z"/></svg>我的</div>
         </div>
       </div>
 
@@ -428,7 +435,7 @@ body.shot.cards .side{display:flex;}
         <div class="topics"><span class="topic">#本周TOP10回合</span><span class="topic">#网球生活日记</span><span class="topic">#界内之王</span></div>
         <div class="wfall">
           <div class="wcol">
-            <div class="pcard" onclick="openPostSheet()">
+            <div class="pcard" id="myPostB" onclick="openPostSheet()">
               <div class="cov g1"><span class="fromtag">从榜单分享</span></div>
               <div class="ttl">168 km/h 的发球炸了！大家给我点赞</div>
               <div class="rankcard" onclick="event.stopPropagation();goRank()"><b>球速榜 · 第 1 名</b> · 获赞 2000 · 距第 2 名领先 12 个赞 ›</div>
@@ -459,7 +466,38 @@ body.shot.cards .side{display:flex;}
           <div class="ti"><svg viewBox="0 0 24 24"><path d="M6 3h12l2 5H4l2-5zm-2 7h16v11H4V10z"/></svg>榜单</div>
           <div class="ti"><svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16zm1 7V8h-2v3H8v2h3v3h2v-3h3v-2h-3z"/></svg>发布</div>
           <div class="ti on"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>社区</div>
-          <div class="ti"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-3.3 0-7 1.7-7 4v2h14v-2c0-2.3-3.7-4-7-4z"/></svg>我的</div>
+          <div class="ti" onclick="goMine()"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-3.3 0-7 1.7-7 4v2h14v-2c0-2.3-3.7-4-7-4z"/></svg>我的</div>
+        </div>
+      </div>
+
+      <!-- 我的 · 我的帖子（自己内容不进自己 feed，仅在此查看） -->
+      <div class="scr hidden" id="scr-mine">
+        <div class="chead"><span style="cursor:pointer;color:var(--ink2);font-size:16px" onclick="goCommunity()">‹</span><span class="ttl">我的</span><span style="width:16px"></span></div>
+        <div class="minehead">
+          <div class="mava">李</div>
+          <div><div class="mnm">李日日</div><div class="mid">我的帖子 · 仅自己在此查看，feed 不分发自己的内容</div></div>
+        </div>
+        <div class="msec">我的帖子</div>
+        <div class="mwrap">
+          <div class="pcard round" id="mineCardA" onclick="comCard(0)">
+            <div class="cov g1"><span class="roundtag">回合</span><span class="fromtag">来自球速榜 · 168 km/h</span></div>
+            <div class="ttl">168 km/h 的发球炸了！这速度能上榜吗</div>
+            <div class="meta"><span class="ava">李</span><span class="nm">李日日</span><span class="lkc"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg>2000</span><span class="cmtc"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>12</span></div>
+          </div>
+          <div class="pcard hidden" id="mineCardB" onclick="openPostSheet()">
+            <div class="cov g1"><span class="fromtag">从榜单分享</span></div>
+            <div class="ttl">168 km/h 的发球炸了！大家给我点赞</div>
+            <div class="rankcard" onclick="event.stopPropagation();goRank()"><b>球速榜 · 第 1 名</b> · 获赞 2000 · 距第 2 名领先 12 个赞 ›</div>
+            <div class="meta"><span class="ava">李</span><span class="nm">李日日</span><span class="lkc"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg>2000</span><span class="cmtc"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>8</span></div>
+          </div>
+        </div>
+        <div class="mnote">球筐 feed 不向作者本人分发自己的内容；他人视角 feed 正常可见（切访客视角对照）。点卡进详情页，作者可经 ⋯ 编辑正文 / 删除帖子。</div>
+        <div class="tabbar">
+          <div class="ti"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6h-6v6H3z"/></svg>首页</div>
+          <div class="ti"><svg viewBox="0 0 24 24"><path d="M6 3h12l2 5H4l2-5zm-2 7h16v11H4V10z"/></svg>榜单</div>
+          <div class="ti"><svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16zm1 7V8h-2v3H8v2h3v3h2v-3h3v-2h-3z"/></svg>发布</div>
+          <div class="ti" onclick="goCommunity()"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>社区</div>
+          <div class="ti on"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-3.3 0-7 1.7-7 4v2h14v-2c0-2.3-3.7-4-7-4z"/></svg>我的</div>
         </div>
       </div>
 
@@ -667,7 +705,8 @@ body.shot.cards .side{display:flex;}
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg></div>
         <div class="t"><b>入口</b>
-          <span class="sub">小程序顶层社区 tab 进球筐 feed，带"回合"角标的卡与榜单视频同源（打通方案版本 A）；点卡进共享视频详情页，与榜单视频卡行为一致。</span></div>
+          <span class="sub">小程序顶层社区 tab 进球筐 feed，带"回合"角标的卡与榜单视频同源（打通方案版本 A）；点卡进共享视频详情页，与榜单视频卡行为一致。</span>
+          <span class="sub">feed 不向作者本人分发自己的内容，自己帖子在 我的-我的帖子 查看。</span></div>
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 21s-7.2-4.7-9.6-8.6C.5 9.5 2.6 6 6.1 6c2 0 3.2 1 3.9 2.2C10.7 7 11.9 6 13.9 6c3.5 0 5.6 3.5 3.7 6.4C19.2 16.3 12 21 12 21z"/></svg></div>
@@ -692,8 +731,8 @@ body.shot.cards .side{display:flex;}
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-3.3 0-7 1.7-7 4v2h14v-2c0-2.3-3.7-4-7-4z"/></svg></div>
         <div class="t"><b>作者管理</b>
-          <span class="sub">帖子作者即视频拥有人；作者看自己回合详情页可经右上 ⋯ 编辑正文、删除帖子。</span>
-          <span class="sub">删除只影响社区窗口，榜单侧名次/视频卡/评论流不受影响。</span></div>
+          <span class="sub">帖子作者即视频拥有人；自己内容不进自己 feed，经 我的-我的帖子 进详情页。</span>
+          <span class="sub">右上 ⋯ 编辑正文、删除帖子；删除只影响社区窗口，榜单侧名次/视频卡/评论流不受影响。</span></div>
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v3h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1V7a5 5 0 0 1 5-5zm3 8V7a3 3 0 0 0-6 0v3h6z"/></svg></div>
@@ -748,8 +787,9 @@ body.shot.cards .side{display:flex;}
 var cmtCount = 12, liked = false, likeCount = 2000, curCard = null, role = 'guest', authorized = false, plan = 'a';
 var curCmt = null, suppressClick = false, lpTimer = null;
 var pendingPub = 'share';
+var postDeleted = false;
 function hideAllScrs(){
-  ['scr-list','scr-video','scr-honor','scr-community','scr-community-b'].forEach(function(id){ document.getElementById(id).classList.add('hidden'); });
+  ['scr-list','scr-video','scr-honor','scr-community','scr-community-b','scr-mine'].forEach(function(id){ document.getElementById(id).classList.add('hidden'); });
   ['sheet','menuSheet','editSheet','delConfirm','authSheet','postSheet','cmtMenu','pubSheet','settingsSheet','shareSheet'].forEach(function(id){ document.getElementById(id).classList.add('hidden'); });
   document.getElementById('planSw').classList.add('hidden');
 }
@@ -771,8 +811,20 @@ function applyAuthorUI(){
 function setRole(r, el){
   role = r;
   document.querySelectorAll('.sw.role').forEach(function(s){ s.classList.toggle('on', s.getAttribute('data-role') === r); });
-  document.getElementById('mineTag').classList.toggle('hidden', r !== 'author');
+  syncOwnCards();
   applyAuthorUI();
+}
+function syncOwnCards(){
+  var d = postDeleted ? 'none' : (role === 'author' ? 'none' : '');
+  ['myRound','myPostB'].forEach(function(id){ var n = document.getElementById(id); if(n){ n.style.display = d; } });
+}
+function goMine(){
+  if(role !== 'author'){ toast('未登录 · 登录后可查看我的（示意）'); return; }
+  hideAllScrs();
+  document.getElementById('scr-mine').classList.remove('hidden');
+  document.getElementById('mineCardA').classList.toggle('hidden', plan !== 'a');
+  document.getElementById('mineCardB').classList.toggle('hidden', plan !== 'b');
+  if(postDeleted){ document.getElementById('mineCardA').style.display = 'none'; document.getElementById('mineCardB').style.display = 'none'; }
 }
 function openMenu(){ document.getElementById('menuSheet').classList.remove('hidden'); }
 function closeMenu(){ document.getElementById('menuSheet').classList.add('hidden'); }
@@ -781,7 +833,7 @@ function closeEdit(){ document.getElementById('editSheet').classList.add('hidden
 function saveEdit(){
   var v = document.getElementById('editTa').value.trim();
   if(!v){ toast('正文不能为空'); return; }
-  document.querySelector('#myRound .ttl').textContent = v;
+  ['#myRound .ttl','#mineCardA .ttl','#myPostB .ttl','#mineCardB .ttl'].forEach(function(sel){ var n = document.querySelector(sel); if(n){ n.textContent = v; } });
   closeEdit();
   toast('正文已更新');
   goCommunity();
@@ -790,8 +842,9 @@ function askDel(){ closeMenu(); document.getElementById('delConfirm').classList.
 function closeDel(){ document.getElementById('delConfirm').classList.add('hidden'); }
 function doDel(){
   closeDel();
-  var card = document.getElementById('myRound');
-  if(card){ card.style.display = 'none'; }
+  postDeleted = true;
+  syncOwnCards();
+  ['mineCardA','mineCardB'].forEach(function(id){ var n = document.getElementById(id); if(n){ n.style.display = 'none'; } });
   toast('帖子已删除，榜单不受影响');
   goCommunity();
 }
@@ -833,7 +886,7 @@ function doPub(){
   var v = document.getElementById('pubTa').value.trim();
   if(!v){ toast('文案不能为空'); return; }
   closePub();
-  toast('已发布，回合内容进入球筐');
+  toast('已发布 · 他人 feed 可见，自己在 我的-我的帖子 查看');
 }
 function openSettings(){ document.getElementById('settingsSheet').classList.remove('hidden'); }
 function closeSettings(){ document.getElementById('settingsSheet').classList.add('hidden'); }
@@ -996,6 +1049,8 @@ function doCmtDel(){
   else if(s === 'settings'){ goCommunity(); openSettings(); }
   else if(s === 'planb'){ setPlan('b'); goCommunity(); }
   else if(s === 'postsheet'){ setPlan('b'); goCommunity(); openPostSheet(); }
+  else if(s === 'mine'){ setRole('author'); goMine(); }
+  else if(s === 'mineb'){ setRole('author'); setPlan('b'); goMine(); }
 })();
 </script>
 </body>
