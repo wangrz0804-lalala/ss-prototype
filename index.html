@@ -609,7 +609,7 @@ body.shot.cards .side{display:flex;}
       </div>
       <div class="row">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v3h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1V7a5 5 0 0 1 5-5zm3 8V7a3 3 0 0 0-6 0v3h6z"/></svg></div>
-        <div class="t"><b>评论管理（长按）</b>：长按他人评论出"举报"（P0），复用社区现有举报入口与人工审核队列，toast"举报已受理"；长按自己评论出"删除"（P1），半屏/右轨/视频卡/荣誉榜四处计数同步 -1。帖子评论流同规则、与榜单侧互不影响。</div>
+        <div class="t"><b>评论管理（长按）</b>：长按他人评论出"举报"（P0），复用社区现有举报入口与人工审核队列，toast"举报已受理"；作者在自己回合下长按他人评论额外出"删除"（P0，验收 35）；长按自己评论出"删除"（P1），半屏/右轨/视频卡/荣誉榜四处计数同步 -1。帖子评论流同规则、与榜单侧互不影响。</div>
       </div>
       <div class="cap">入口清单 · 计数跨风云/球速/击球数榜聚合</div>
     </div>
@@ -891,7 +891,8 @@ document.addEventListener('click', function(e){
 function openCmtMenu(el){
   curCmt = el;
   var mine = cmtIsMine(el);
-  document.getElementById('cmtDel').classList.toggle('hidden', !mine);
+  var canDel = mine || (role === 'author' && isOwnVideo());
+  document.getElementById('cmtDel').classList.toggle('hidden', !canDel);
   document.getElementById('cmtReport').classList.toggle('hidden', mine);
   document.getElementById('cmtMenu').classList.remove('hidden');
 }
@@ -918,7 +919,7 @@ function doCmtDel(){
     toast('评论已删除（帖子评论流）');
   }
 }
-/* 截图模式：?shot=list/video/sheet/empty/honor/community/cards/author/authorvideo/menu/edit/delconfirm/sharepanel/auth/pubauth/pubedit/settings/planb/postsheet/cmtmenu */
+/* 截图模式：?shot=list/video/sheet/empty/honor/community/cards/author/authorvideo/menu/edit/delconfirm/sharepanel/auth/pubauth/pubedit/settings/planb/postsheet/cmtmenu/cmtmenua */
 (function(){
   var s = new URLSearchParams(location.search).get('shot');
   if(!s) return;
@@ -928,6 +929,7 @@ function doCmtDel(){
   if(s === 'video'){ goVideo(cards[0]); }
   else if(s === 'sheet'){ goVideo(cards[0]); openSheet(); }
   else if(s === 'cmtmenu'){ goVideo(cards[0]); openSheet(); openCmtMenu(document.querySelector('#clist .citem')); }
+  else if(s === 'cmtmenua'){ setRole('author'); goVideo(cards[0]); openSheet(); openCmtMenu(document.querySelector('#clist .citem')); }
   else if(s === 'empty'){ goVideo(cards[2]); openSheet(); }
   else if(s === 'honor'){ goHonor(); }
   else if(s === 'community'){ goCommunity(); }
